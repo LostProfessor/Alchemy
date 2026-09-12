@@ -266,6 +266,10 @@ public sealed class RunManager
 
 	private void StartCombat(CombatRoom room)
 	{
+		// 战斗内资源每场从零开始（房间外来源如事件给过格挡/效果，不应带入这场战斗）
+		Player.Block = 0;
+		Player.Effects.Clear();
+
 		var combat = new CombatState(Random.Next()); // 战斗随机从整局种子派生
 		combat.AddAlly(Player);
 		foreach (var monster in room.Encounter.Monsters)

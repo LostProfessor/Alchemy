@@ -24,11 +24,11 @@ public partial class RewardPanel : PanelContainer
 	public override void _Ready()
 	{
 		_game = GetNode<GameState>("/root/GameState");
-		Visible = false; // 默认隐藏，由战斗场景在胜利后调用 Show()
+		Visible = false; // 默认隐藏，由战斗场景在胜利后调用 Open()
 	}
 
 	/// <summary>奖励阶段展示：货币 / 额外遗物 / 三选一袋 逐块领取，可“跳过全部”离开。</summary>
-	public void Show()
+	public void Open()
 	{
 		var mgr = _game.Manager;
 		if (mgr == null || mgr.Phase != RunPhase.Reward)
@@ -36,7 +36,9 @@ public partial class RewardPanel : PanelContainer
 			return;
 		}
 
-		Clear();		_list.AddChild(new Label
+		Clear();
+
+		_list.AddChild(new Label
 		{
 			Text = "战斗胜利！点击领取想要的奖励（可跳过全部）",
 			HorizontalAlignment = HorizontalAlignment.Center,
@@ -85,7 +87,7 @@ public partial class RewardPanel : PanelContainer
 
 		if (mgr.Phase == RunPhase.Reward)
 		{
-			Show();
+			Open();
 		}
 		else if (mgr.Phase == RunPhase.BossRelicChoice)
 		{
@@ -116,7 +118,7 @@ public partial class RewardPanel : PanelContainer
 
 		if (mgr.Phase == RunPhase.Reward)
 		{
-			Show(); // 还有未处理块 → 重建界面（已领的消失）
+			Open(); // 还有未处理块 → 重建界面（已领的消失）
 		}
 		else if (mgr.Phase == RunPhase.BossRelicChoice)
 		{

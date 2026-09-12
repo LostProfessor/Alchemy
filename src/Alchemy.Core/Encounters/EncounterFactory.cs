@@ -122,7 +122,16 @@ public static class EncounterFactory
     public static int MaxMonsterHp(int actIndex)
     {
         var act = _current[ClampAct(actIndex)];
-        return act.Pool.Max(def => def.MonsterIds.Max(MonsterTemplates.Get).MaxHp);
+        int max = 0;
+        foreach (var def in act.Pool)
+        {
+            foreach (var id in def.MonsterIds)
+            {
+                max = Math.Max(max, MonsterTemplates.Get(id).MaxHp);
+            }
+        }
+
+        return max;
     }
 
     private static int ClampAct(int actIndex) => Math.Clamp(actIndex, 1, TotalActs);

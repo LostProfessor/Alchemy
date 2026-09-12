@@ -184,10 +184,18 @@ public sealed class CombatState
             }
         }
 
-        // 2) 计时动作（敌人行动/炼药操作）；倒序迭代，允许回调中增删
-        for (int i = _pendingActions.Count - 1; i >= 0; i--)
+        // 2) 计时动作（敌人行动/炼药操作）。
+        // 用快照倒序迭代：回调里可能新增（本帧不推进）/移除动作（如打断会把出手换成瘫痪），
+        // 直接按索引遍历真实列表会被位移打乱；快照 + 存在性检查最稳。
+        var actions = new List<TimedAction>(_pendingActions);
+        for (int i = actions.Count - 1; i >= 0; i--)
         {
-            var action = _pendingActions[i];
+            var action = actions[i];
+            if (!_pendingActions.Contains(action))
+            {
+                continue; // 已在回调中被移除
+            }
+
             action.Remaining -= seconds;
 
             // 预兆：进入"执行前 telegraph 秒"时触发一次（先于完成判定，保证信号先到）
@@ -199,7 +207,7 @@ public sealed class CombatState
 
             if (action.Remaining <= 0)
             {
-                _pendingActions.RemoveAt(i);
+                _pendingActions.Remove(action);
                 action.OnComplete(this);
             }
         }

@@ -46,7 +46,10 @@ public sealed class HookHub
 
     private void ForEach(Action<IHookListener> action)
     {
-        foreach (var listener in _listeners)
+        // 快照迭代：监听者可能在回调中增删自己（如死亡触发遗物移除），
+        // 直接遍历真实列表会抛"集合已修改"。
+        var snapshot = _listeners.ToArray();
+        foreach (var listener in snapshot)
         {
             action(listener);
         }

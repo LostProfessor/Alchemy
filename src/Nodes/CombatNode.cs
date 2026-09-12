@@ -340,7 +340,7 @@ public partial class CombatNode : Control
 			{
 				// 自动存档：敌人全灭、房间已完成（检查点=本战斗房）
 				_game.Save();
-				_rewardPanel?.Show();
+				_rewardPanel?.Open();
 			}
 			else
 			{

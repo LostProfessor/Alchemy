@@ -24,7 +24,7 @@ public partial class EnemyView : TargetZone
 
 	private CombatState? _combat;
 	private Creature? _enemy;
-	private Tween? _windUpTween;
+	private Tween? _poseTween; // 抬手/瘫痪等姿势补间（新动作会打断旧的）
 
 	/// <summary>绑定一场战斗里的一个敌人，并填充静态内容（插图/名字）。</summary>
 	public void Bind(CombatState combat, Creature enemy)
@@ -75,14 +75,14 @@ public partial class EnemyView : TargetZone
 	/// </summary>
 	private void PlayWindUp()
 	{
-		_windUpTween?.Kill();
+		_poseTween?.Kill();
 
 		PivotOffset = Size / 2f; // 以中心为轴缩放
 		Scale = Vector2.One;
 
-		_windUpTween = CreateTween();
-		_windUpTween.TweenProperty(this, "scale", new Vector2(1.12f, 1.12f), 0.15);
-		_windUpTween.TweenProperty(this, "scale", Vector2.One, 0.35);
+		_poseTween = CreateTween();
+		_poseTween.TweenProperty(this, "scale", new Vector2(1.12f, 1.12f), 0.15);
+		_poseTween.TweenProperty(this, "scale", Vector2.One, 0.35);
 	}
 
 	/// <summary>打断（破招）：本敌人被打断 → 取消抬手，播瘫痪表现。</summary>
@@ -102,13 +102,13 @@ public partial class EnemyView : TargetZone
 	/// </summary>
 	private void PlayStagger()
 	{
-		_windUpTween?.Kill(); // 取消抬手
+		_poseTween?.Kill(); // 取消抬手
 		Scale = Vector2.One;
 
 		PivotOffset = Size / 2f;
-		var tween = CreateTween();
-		tween.TweenProperty(this, "scale", new Vector2(0.94f, 0.9f), 0.12);
-		tween.TweenProperty(this, "scale", Vector2.One, 0.3);
+		_poseTween = CreateTween();
+		_poseTween.TweenProperty(this, "scale", new Vector2(0.94f, 0.9f), 0.12);
+		_poseTween.TweenProperty(this, "scale", Vector2.One, 0.3);
 	}
 
 	public override void _Process(double delta)
@@ -132,7 +132,12 @@ public partial class EnemyView : TargetZone
 
 			if (_actionBar != null) _actionBar.Visible = false;
 			if (_effectsBar != null) _effectsBar.Visible = false;
-			if (_intentionLabel != null) _intentionLabel.Text = "💀 倒下";
+			if (_intentionLabel != null)
+			{
+				_intentionLabel.Text = "💀 倒下";
+				_intentionLabel.Modulate = new Color(0.55f, 0.55f, 0.55f); // 清掉警示/瘫痪色
+			}
+
 			return;
 		}
 
