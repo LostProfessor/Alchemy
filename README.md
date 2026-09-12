@@ -133,4 +133,4 @@ Alchemy/
 
 ---
 
-*作者：[待填 GitHub 用户名] · 反馈与建议欢迎开 Issue*
+*作者：[@LostProfessor](https://github.com/LostProfessor) · 反馈与建议欢迎开 Issue*
