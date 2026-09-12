@@ -55,6 +55,12 @@ public partial class GameState : Node
 	/// <summary>主菜单场景。</summary>
 	public const string MainMenuScenePath = "res://scenes/main_menu/main_menu.tscn";
 
+	/// <summary>设置场景（顶栏与主菜单都可进入）。</summary>
+	public const string SettingsScenePath = "res://scenes/settings/settings.tscn";
+
+	/// <summary>历史回顾场景。</summary>
+	public const string HistoryScenePath = "res://scenes/history/history.tscn";
+
 	/// <summary>当前进行中的整局；null = 当前没有进行中的局。</summary>
 	public RunManager? Manager { get; private set; }
 

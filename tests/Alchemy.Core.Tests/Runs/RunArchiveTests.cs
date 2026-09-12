@@ -47,19 +47,19 @@ public class RunArchiveTests
     }
 
     [Fact]
-    public void Append_NewestFirst_And_TrimsToMax()
+    public void Append_NewestFirst_KeepsAll()
     {
         var path = TempPath();
         try
         {
-            for (int i = 0; i < RunArchive.MaxRecords + 5; i++)
+            for (int i = 0; i < 8; i++)
             {
                 RunArchive.Append(path, new RunRecord { Outcome = "Defeated", ActIndex = i });
             }
 
             var all = RunArchive.LoadAll(path);
-            Assert.Equal(RunArchive.MaxRecords, all.Count);
-            Assert.Equal(RunArchive.MaxRecords + 4, all[0].ActIndex); // 最新在最前
+            Assert.Equal(8, all.Count);      // 全部保留（不设上限）
+            Assert.Equal(7, all[0].ActIndex); // 最新在最前
         }
         finally
         {

@@ -39,3 +39,8 @@ theme/custom_font="uid://bufly0fapykmx"
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/translations.en.translation")
+locale/fallback="zh_CN"

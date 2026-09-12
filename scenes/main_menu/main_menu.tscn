@@ -62,6 +62,10 @@ text = "退出游戏"
 layout_mode = 2
 text = "游戏设置"
 
+[node name="HistoryBtn" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "历史记录"
+
 [node name="MapButton" type="Button" parent="." unique_id=717890595]
 layout_mode = 0
 offset_left = 991.0

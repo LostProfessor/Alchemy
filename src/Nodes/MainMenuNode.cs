@@ -36,9 +36,26 @@ public partial class MainMenuNode : Control
 			_randomSeedBtn.Pressed += () => _seedInput!.Text = new Random().Next(1, int.MaxValue).ToString();
 		}
 
+		// 可选入口：按节点名找（不依赖 Inspector 拖拽，重存场景也不会丢绑定）
+		var configBtn = GetNodeOrNull<Button>("VBoxContainer/ConfigBtn");
+		if (configBtn != null) configBtn.Pressed += OpenSettings;
+
+		var historyBtn = GetNodeOrNull<Button>("VBoxContainer/HistoryBtn");
+		if (historyBtn != null) historyBtn.Pressed += OpenHistory;
+
 		// 有存档才允许"继续"
 		_continueBtn!.Disabled = !_game.HasSave;
 	}
+
+	/// <summary>打开设置场景（返回时回主菜单）。</summary>
+	private void OpenSettings()
+	{
+		_game.ReturnScenePath = GetTree().CurrentScene?.SceneFilePath ?? GameState.MainMenuScenePath;
+		_game.ChangeScene(GameState.SettingsScenePath);
+	}
+
+	/// <summary>打开历史回顾场景。</summary>
+	private void OpenHistory() => _game.ChangeScene(GameState.HistoryScenePath);
 
 	private void StartNewRun()
 	{
