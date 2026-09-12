@@ -52,6 +52,9 @@ public partial class GameState : Node
 	/// <summary>失败结算场景（玩家倒下后进入）。</summary>
 	public const string DefeatScenePath = "res://scenes/result/defeat.tscn";
 
+	/// <summary>主菜单场景。</summary>
+	public const string MainMenuScenePath = "res://scenes/main_menu/main_menu.tscn";
+
 	/// <summary>当前进行中的整局；null = 当前没有进行中的局。</summary>
 	public RunManager? Manager { get; private set; }
 
@@ -140,6 +143,17 @@ public partial class GameState : Node
 		return false;
 	}
 
+
+	/// <summary>
+	/// 保存当前局并退出到主菜单：保留存档（可从主菜单“继续”恢复），**不归档、不结束本局**。
+	/// 与 <see cref="EndRun"/>（结束/放弃 → 归档 + 删档）区分。
+	/// </summary>
+	public void SaveAndQuitToMenu()
+	{
+		Save(); // 无局时 Save 内部判空
+		Manager = null;
+		RunTotalSeconds = 0;
+	}
 
 	/// <summary>结束/放弃当前局（回主菜单时调用）：先把本局归档到历史，再删除进行中的存档。</summary>
 	public void EndRun()

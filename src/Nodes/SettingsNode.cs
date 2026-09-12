@@ -29,6 +29,7 @@ public partial class SettingsNode : Control
 
 	private GameState _game = null!;
 	private GameSettings _settings = new();
+	private ConfirmationDialog? _confirmDialog;
 
 	public override void _Ready()
 	{
@@ -76,8 +77,55 @@ public partial class SettingsNode : Control
 			Modulate = new Color(0.6f, 0.6f, 0.6f),
 		});
 
+		// 保存并退出到主菜单（带复核确认）
+		section.AddChild(new HSeparator());
+		var actions = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
+		actions.AddThemeConstantOverride("separation", 12);
+		var saveQuit = new Button
+		{
+			Text = "保存并退出到主菜单",
+			CustomMinimumSize = new Vector2(220, 0),
+		};
+		saveQuit.Pressed += ConfirmSaveAndQuit;
+		actions.AddChild(saveQuit);
+		section.AddChild(actions);
+
 		content.AddChild(section);
 		content.MoveChild(section, 1); // 紧跟标题
+	}
+
+	/// <summary>保存并退出到主菜单：先弹窗复核确认，确认后才保存+回主菜单（存档保留，可“继续”）。</summary>
+	private void ConfirmSaveAndQuit()
+	{
+		var mgr = _game.Manager;
+		if (mgr == null)
+		{
+			_game.ChangeScene(GameState.MainMenuScenePath); // 没有进行中的局 → 不必保存/确认
+			return;
+		}
+
+		_confirmDialog ??= BuildConfirmDialog();
+		_confirmDialog.DialogText =
+			$"保存当前进度并退出到主菜单？\n（第 {mgr.ActIndex} 大层 · 生命 {mgr.Player.CurrentHp}/{mgr.Player.MaxHp}）\n之后可从主菜单「继续」这一局。";
+		_confirmDialog.PopupCentered();
+	}
+
+	/// <summary>复核确认弹窗（首次使用时创建并常驻本场景）。</summary>
+	private ConfirmationDialog BuildConfirmDialog()
+	{
+		var dialog = new ConfirmationDialog
+		{
+			Title = "确认",
+			OkButtonText = "保存并退出",
+			CancelButtonText = "取消",
+		};
+		dialog.Confirmed += () =>
+		{
+			_game.SaveAndQuitToMenu();
+			_game.ChangeScene(GameState.MainMenuScenePath);
+		};
+		AddChild(dialog);
+		return dialog;
 	}
 
 	private static Label SectionTitle(string text)
