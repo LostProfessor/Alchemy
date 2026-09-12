@@ -108,13 +108,12 @@ text = "清水"
 [node name="OilBase" type="Button" parent="HUD/BaseChoose" unique_id=1029422459]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
-text = " 油 "
+text = "浓油"
 
 [node name="SlimeBase" type="Button" parent="HUD/BaseChoose" unique_id=2129068136]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-text = "神秘黏液
-"
+text = "黏液"
 
 [node name="RewardPanel" parent="HUD" unique_id=2017381994 instance=ExtResource("8_reward")]
 offset_left = 343.0

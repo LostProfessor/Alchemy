@@ -43,7 +43,15 @@ public partial class CombatNode : Control
 	public override void _Ready()
 	{
 		_game = GetNode<GameState>("/root/GameState");
-		_combat = _game.Manager!.ActiveCombat!;
+
+		if (_game.Manager?.ActiveCombat is not { } combat)
+		{
+			// 单独加载本场景（无进行中的局）或非战斗房：只提示，不崩溃
+			GD.PushError("CombatNode: 当前没有进行中的战斗（请从地图进入战斗房）");
+			return;
+		}
+
+		_combat = combat;
 
 		if (_enemyContainer == null) GD.PushError("CombatNode: 漏拖 _enemyContainer（敌人容器）");
 		if (_playerView == null) GD.PushError("CombatNode: 漏拖 _playerView（玩家视图）");
@@ -92,6 +100,11 @@ public partial class CombatNode : Control
 	/// <summary>战斗实时驱动：唯一时间入口，逻辑层一切倒计时都靠它推进。</summary>
 	public override void _Process(double delta)
 	{
+		if (_combat == null)
+		{
+			return; // _Ready 因无战斗提前返回（防御）
+		}
+
 		_combat.AdvanceTime((float)delta);
 
 		// 敌人/玩家/顶部栏等各自 _Process 实时刷新自身显示
