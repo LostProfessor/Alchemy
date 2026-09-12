@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://ranrufgryreu"]
+
+[ext_resource type="Texture2D" uid="uid://btqaaygm1olef" path="res://Theme/textures/ingredients/snakeberry.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Effect = 4
+Amount = 2
+
+[resource]
+script = ExtResource("1_s")
+Id = "snakeberry"
+DisplayName = "蛇莓"
+Description = "艳红多汁，暗藏剧毒。"
+Rarity = 1
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1")]

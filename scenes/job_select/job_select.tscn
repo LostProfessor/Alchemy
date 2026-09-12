@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://cj0b3k2r5m7a1"]
+
+[ext_resource type="Script" uid="uid://wk67e1k6leh8" path="res://src/Nodes/JobSelectNode.cs" id="1_jobsel"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font_size = 80
+font_color = Color(0.9, 0.9, 0.95, 1)
+
+[node name="JobSelect" type="Control" unique_id=1786565666 node_paths=PackedStringArray("_researcherBtn", "_elfBtn", "_alienBtn", "_backBtn", "_infoLabel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jobsel")
+_researcherBtn = NodePath("VBoxContainer/ResearcherBtn")
+_elfBtn = NodePath("VBoxContainer/ElfBtn")
+_alienBtn = NodePath("VBoxContainer/AlienBtn")
+_backBtn = NodePath("BackBtn")
+_infoLabel = NodePath("InfoLabel")
+
+[node name="Title" type="Label" parent="." unique_id=180284938]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 80.0
+offset_bottom = 180.0
+grow_horizontal = 2
+text = "选择你的职业"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="HBoxContainer" parent="." unique_id=1221734565]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -259.5
+offset_top = -73.0
+offset_right = 259.5
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ResearcherBtn" type="Button" parent="VBoxContainer" unique_id=991671914]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "清水基底 · 队列炼药 · 遗物：炼金典籍"
+text = "研究员"
+
+[node name="ElfBtn" type="Button" parent="VBoxContainer" unique_id=813809417]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "浓油基底 · 栈炼药 · 遗物：腐蚀手册"
+text = "精灵"
+
+[node name="AlienBtn" type="Button" parent="VBoxContainer" unique_id=1560522061]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "黏液基底 · 反转炼药 · 遗物：反转卷轴"
+text = "E.T."
+
+[node name="BackBtn" type="Button" parent="." unique_id=1777734240]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -100.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "返回主菜单"
+
+[node name="InfoLabel" type="Label" parent="." unique_id=1165650884]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 640.0
+offset_bottom = 680.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "研究员 = 队列炼药　·　精灵 = 栈炼药　·　E.T. = 反转炼药"
+horizontal_alignment = 1

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://bo14r2n1eltua"]
+
+[ext_resource type="Texture2D" uid="uid://bh0iuuls6molc" path="res://Theme/textures/ingredients/phoenixfeather.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Effect = 1
+Amount = 3
+
+[sub_resource type="Resource" id="op2"]
+script = ExtResource("2_op")
+Effect = 13
+
+[resource]
+script = ExtResource("1_s")
+Id = "phoenixfeather"
+DisplayName = "凤凰羽"
+Description = "炽羽不熄，起死回生。"
+Rarity = 3
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1"), SubResource("op2")]

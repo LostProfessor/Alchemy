@@ -1,0 +1,42 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/EventResource.cs" id="1_e"]
+[ext_resource type="Script" path="res://src/Nodes/EventChoiceResource.cs" id="2_c"]
+[ext_resource type="Script" path="res://src/Nodes/EventActionResource.cs" id="3_a"]
+
+[sub_resource type="Resource" id="a1"]
+script = ExtResource("3_a")
+Type = 7
+Count = 2
+IngredientRarity = 1
+
+[sub_resource type="Resource" id="a2"]
+script = ExtResource("3_a")
+Type = 0
+Amount = 12
+
+[sub_resource type="Resource" id="a3"]
+script = ExtResource("3_a")
+Type = 7
+IngredientRarity = 2
+
+[sub_resource type="Resource" id="c1"]
+script = ExtResource("2_c")
+Label = "翻找（获得 2 个罕见药材）"
+Actions = Array[Resource]([SubResource("a1")])
+
+[sub_resource type="Resource" id="c2"]
+script = ExtResource("2_c")
+Label = "冒险深入（失去 12 生命，获得 1 个稀有药材）"
+Actions = Array[Resource]([SubResource("a2"), SubResource("a3")])
+
+[sub_resource type="Resource" id="c3"]
+script = ExtResource("2_c")
+Label = "离开"
+
+[resource]
+script = ExtResource("1_e")
+Id = "abandoned_shelf"
+Title = "废弃药架"
+Description = "废弃的药架上落满灰尘，几瓶药材还散发着微弱的光泽。"
+Choices = Array[Resource]([SubResource("c1"), SubResource("c2"), SubResource("c3")])

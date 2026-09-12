@@ -1,0 +1,8 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/BrewingSettingsResource.cs" id="1_bs"]
+
+[resource]
+script = ExtResource("1_bs")
+AddIngredientSeconds = 2.0
+CompletePotionSeconds = 3.0

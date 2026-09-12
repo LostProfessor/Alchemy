@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://a3b4c5d6e7f8g9"]
+
+[ext_resource type="Script" path="res://src/Nodes/TreasureRoomNode.cs" id="1_s"]
+[ext_resource type="PackedScene" path="res://scenes/ui/top_bar.tscn" id="2_tb"]
+
+[node name="Treasure" type="Control" node_paths=PackedStringArray("_content")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s")
+_content = NodePath("Content")
+
+[node name="TopBar" parent="." instance=ExtResource("2_tb")]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 30.0
+grow_horizontal = 2
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 320.0
+offset_top = 90.0
+offset_right = 960.0
+offset_bottom = 650.0
+theme_override_constants/separation = 12

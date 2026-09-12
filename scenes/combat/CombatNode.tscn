@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://fld2ficosb8i"]
+
+[ext_resource type="Script" uid="uid://btqo68yd20md8" path="res://src/Nodes/CombatNode.cs" id="1_7kvby"]
+
+[node name="CombatNode" type="Control" unique_id=904293761 node_paths=PackedStringArray("_enemyContainer", "_playerHpLabel", "_statusLabel", "_attackBtn", "_quitBtn")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_7kvby")
+_enemyContainer = NodePath("World/Enemies")
+_playerHpLabel = NodePath("HUD/PlayerHP")
+_statusLabel = NodePath("HUD/Status")
+_attackBtn = NodePath("HUD/AttackBtn")
+_quitBtn = NodePath("HUD/QuitBtn")
+
+[node name="World" type="CanvasLayer" parent="." unique_id=289091675]
+
+[node name="Enemies" type="HBoxContainer" parent="World" unique_id=869447142]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1230166160]
+layer = 10
+
+[node name="PlayerHP" type="Label" parent="HUD" unique_id=1972743890]
+offset_left = 220.0
+offset_top = 202.0
+offset_right = 260.0
+offset_bottom = 219.0
+
+[node name="Status" type="Label" parent="HUD" unique_id=1807850500]
+offset_left = 202.0
+offset_top = 352.0
+offset_right = 242.0
+offset_bottom = 369.0
+
+[node name="AttackBtn" type="Button" parent="HUD" unique_id=1053397979]
+offset_left = 102.0
+offset_top = 54.0
+offset_right = 183.0
+offset_bottom = 82.0
+
+[node name="QuitBtn" type="Button" parent="HUD" unique_id=1102885630]
+offset_left = 102.0
+offset_top = 18.0
+offset_right = 182.0
+offset_bottom = 46.0
+
+[node name="Popup" type="CanvasLayer" parent="." unique_id=2078689443]
+layer = 20

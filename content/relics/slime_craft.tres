@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://n3o4p5q6r7s8t"]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "slime_craft"
+DisplayName = "反转卷轴"
+Description = "E.T. 专属。能让炼药顺序反转的古老卷轴。（效果待设计）"

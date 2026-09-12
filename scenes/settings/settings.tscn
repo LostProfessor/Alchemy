@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://s3e4t5n6o7d8e9"]
+
+[ext_resource type="Script" path="res://src/Nodes/SettingsNode.cs" id="1_s"]
+
+[node name="Settings" type="Control" node_paths=PackedStringArray("_saveBtn", "_backBtn", "_statusLabel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s")
+_saveBtn = NodePath("Content/Row/SaveBtn")
+_backBtn = NodePath("Content/Row/BackBtn")
+_statusLabel = NodePath("Content/StatusLabel")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 400.0
+offset_top = 110.0
+offset_right = 880.0
+offset_bottom = 620.0
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "设置"
+horizontal_alignment = 1
+
+[node name="FutureHint" type="Label" parent="Content"]
+layout_mode = 2
+text = "（以后的设置会加到这里：总体音量 · 本地化 · 帧数 …）"
+horizontal_alignment = 1
+modulate = Color(0.6, 0.6, 0.6, 1)
+
+[node name="Sep" type="HSeparator" parent="Content"]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="Content"]
+layout_mode = 2
+text = "保存当前局进度（进房/离房等关键节点也会自动存档）"
+horizontal_alignment = 1
+
+[node name="Row" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="SaveBtn" type="Button" parent="Content/Row"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "保存当前局"
+
+[node name="BackBtn" type="Button" parent="Content/Row"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "返回"

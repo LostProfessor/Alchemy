@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "iron_bracer"
+DisplayName = "铁皮手环"
+Description = "战斗开始时，获得 1 层坚韧（受到的所有伤害 −1）。"

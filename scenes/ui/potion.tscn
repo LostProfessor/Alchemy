@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://cbn4o6gfajcae"]
+
+[ext_resource type="Script" path="res://src/Nodes/PotionView.cs" id="1_pv"]
+
+[node name="PotionView" type="PanelContainer" node_paths=PackedStringArray("_colorRect", "_nameLabel", "_hintLabel")]
+custom_minimum_size = Vector2(170, 64)
+script = ExtResource("1_pv")
+_colorRect = NodePath("Row/Icon")
+_nameLabel = NodePath("Row/Info/NameLabel")
+_hintLabel = NodePath("Row/Info/HintLabel")
+
+[node name="Row" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="Icon" type="ColorRect" parent="Row"]
+custom_minimum_size = Vector2(56, 40)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Info" type="VBoxContainer" parent="Row"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="Row/Info"]
+layout_mode = 2
+mouse_filter = 2
+text = "药水"
+
+[node name="HintLabel" type="Label" parent="Row/Info"]
+layout_mode = 2
+mouse_filter = 2
+modulate = Color(0.7, 0.7, 0.7, 1)
+text = "拖到目标投掷"

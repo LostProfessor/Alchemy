@@ -1,0 +1,31 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/EventResource.cs" id="1_e"]
+[ext_resource type="Script" path="res://src/Nodes/EventChoiceResource.cs" id="2_c"]
+[ext_resource type="Script" path="res://src/Nodes/EventActionResource.cs" id="3_a"]
+
+[sub_resource type="Resource" id="a1"]
+script = ExtResource("3_a")
+Type = 3
+Amount = 4
+
+[sub_resource type="Resource" id="a2"]
+script = ExtResource("3_a")
+Type = 9
+RelicRarity = 2
+
+[sub_resource type="Resource" id="c1"]
+script = ExtResource("2_c")
+Label = "献祭（生命上限 -4，获得 1 件稀有遗物）"
+Actions = Array[Resource]([SubResource("a1"), SubResource("a2")])
+
+[sub_resource type="Resource" id="c2"]
+script = ExtResource("2_c")
+Label = "离开"
+
+[resource]
+script = ExtResource("1_e")
+Id = "forsaken_altar"
+Title = "被遗弃的祭坛"
+Description = "荒废的祭坛上残留着诡异的力量，献上一些生命力或许能换来馈赠。"
+Choices = Array[Resource]([SubResource("c1"), SubResource("c2")])

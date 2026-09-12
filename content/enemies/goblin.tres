@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyResource" format=3 uid="uid://ywclg7m5w4om"]
+
+[ext_resource type="Texture2D" uid="uid://dbkbueywxqxke" path="res://Theme/textures/enemies/goblin.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://dmchvfmmhv02t" path="res://src/Nodes/EnemyResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dce5hrk86vhcv" path="res://src/Nodes/IntentionResource.cs" id="2_int"]
+
+[sub_resource type="Resource" id="int1"]
+script = ExtResource("2_int")
+IntervalSeconds = 20.0
+Damage = 3
+
+[resource]
+script = ExtResource("1_s")
+Id = "goblin"
+DisplayName = "哥布林"
+Icon = ExtResource("1_icon")
+Intentions = [SubResource("int1")]

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "mana_crystal"
+DisplayName = "法力水晶"
+Description = "主动：回复 5 点生命。每场战斗可用 1 次。"

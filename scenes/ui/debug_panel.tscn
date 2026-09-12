@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://cq5a1ampa312x"]
+
+[ext_resource type="Script" uid="uid://44ecykxvmvlt" path="res://src/Nodes/DebugPanel.cs" id="1_dbg"]
+
+[sub_resource type="StyleBoxFlat" id="dbg_bg"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.08, 0.08, 0.1, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.35, 0.3, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="DebugPanel" type="PanelContainer" unique_id=6707841 node_paths=PackedStringArray("_menuBtn", "_mapBtn", "_jobBtn", "_winBtn", "_loseBtn", "_saveBtn", "_ingredientList")]
+theme_override_styles/panel = SubResource("dbg_bg")
+script = ExtResource("1_dbg")
+_menuBtn = NodePath("Content/JumpRow/MenuBtn")
+_mapBtn = NodePath("Content/JumpRow/MapBtn")
+_jobBtn = NodePath("Content/JumpRow/JobBtn")
+_winBtn = NodePath("Content/JumpRow/WinBtn")
+_loseBtn = NodePath("Content/JumpRow/LoseBtn")
+_saveBtn = NodePath("Content/JumpRow/SaveBtn")
+_ingredientList = NodePath("Content/IngredientList")
+
+[node name="Content" type="VBoxContainer" parent="." unique_id=816165745]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content" unique_id=680773161]
+layout_mode = 2
+text = "Debug"
+horizontal_alignment = 1
+
+[node name="JumpRow" type="HBoxContainer" parent="Content" unique_id=1180907366]
+layout_mode = 2
+
+[node name="MenuBtn" type="Button" parent="Content/JumpRow" unique_id=573884787]
+layout_mode = 2
+text = "主菜单"
+
+[node name="MapBtn" type="Button" parent="Content/JumpRow" unique_id=2026230696]
+layout_mode = 2
+text = "回地图"
+
+[node name="JobBtn" type="Button" parent="Content/JumpRow" unique_id=58116580]
+layout_mode = 2
+text = "选职业"
+
+[node name="WinBtn" type="Button" parent="Content/JumpRow" unique_id=183806649]
+layout_mode = 2
+text = "胜利"
+
+[node name="LoseBtn" type="Button" parent="Content/JumpRow" unique_id=1310827194]
+layout_mode = 2
+text = "失败"
+
+[node name="SaveBtn" type="Button" parent="Content/JumpRow" unique_id=1640533290]
+layout_mode = 2
+text = "保存"
+
+[node name="HSeparator" type="HSeparator" parent="Content" unique_id=581210385]
+layout_mode = 2
+
+[node name="Hint" type="Label" parent="Content" unique_id=523831912]
+layout_mode = 2
+text = "拿药材（稀有度↓）"
+
+[node name="IngredientList" type="GridContainer" parent="Content" unique_id=411265234]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 4

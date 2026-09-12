@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://b3x7lam2q5v1a"]
+
+[ext_resource type="Script" uid="uid://0r1urj20bnkj" path="res://src/Nodes/IngredientCard.cs" id="1_card"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_acp7g"]
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.25882354)
+
+[node name="IngredientCard" type="PanelContainer" unique_id=1479948609 node_paths=PackedStringArray("_icon", "_label")]
+custom_minimum_size = Vector2(130, 60)
+offset_right = 130.0
+offset_bottom = 60.0
+script = ExtResource("1_card")
+_icon = NodePath("HBox/Icon")
+_label = NodePath("HBox/Label")
+
+[node name="HBox" type="HBoxContainer" parent="." unique_id=1985065559]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="HBox" unique_id=727360196]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBox" unique_id=1079871924]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "药材 ×0"
+label_settings = SubResource("LabelSettings_acp7g")

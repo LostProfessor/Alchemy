@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://c3yyanat64xac"]
+
+[ext_resource type="Texture2D" uid="uid://s6cvrldhxnfl" path="res://Theme/textures/ingredients/cindercrystal.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Effect = 3
+Amount = 3
+
+[sub_resource type="Resource" id="op2"]
+script = ExtResource("2_op")
+Effect = 11
+
+[resource]
+script = ExtResource("1_s")
+Id = "cindercrystal"
+DisplayName = "炽晶"
+Description = "灼热结晶，猛攻却令人恍惚。"
+Rarity = 2
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1"), SubResource("op2")]

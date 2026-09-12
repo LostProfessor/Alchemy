@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://pd7x7km71y1w"]
+
+[ext_resource type="Script" uid="uid://doh6ihdq8ro77" path="res://src/Nodes/EnemyView.cs" id="1_ev"]
+
+[sub_resource type="StyleBoxFlat" id="sb_action_bg"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.08, 0.08, 0.1, 0.7)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="sb_action_fill"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.765, 0.671, 0.259, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="EnemyView" type="VBoxContainer" unique_id=717053707 node_paths=PackedStringArray("_image", "_nameLabel", "_hpBar", "_hpValue", "_actionBar", "_intentionLabel", "_effectsBar")]
+script = ExtResource("1_ev")
+_image = NodePath("Image")
+_nameLabel = NodePath("NameLabel")
+_hpBar = NodePath("HpBar")
+_hpValue = NodePath("HpValue")
+_actionBar = NodePath("ActionBar")
+_intentionLabel = NodePath("IntentionLabel")
+_effectsBar = NodePath("Effects")
+
+[node name="IntentionLabel" type="Label" parent="." unique_id=1103107204]
+modulate = Color(1, 1, 0.7, 1)
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="ActionBar" type="ProgressBar" parent="." unique_id=1965496346]
+layout_mode = 2
+theme_override_styles/background = SubResource("sb_action_bg")
+theme_override_styles/fill = SubResource("sb_action_fill")
+max_value = 1.0
+show_percentage = false
+
+[node name="Image" type="TextureRect" parent="." unique_id=1035035866]
+custom_minimum_size = Vector2(130, 90)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="." unique_id=981000788]
+layout_mode = 2
+text = "敌人"
+horizontal_alignment = 1
+
+[node name="HpBar" type="ProgressBar" parent="." unique_id=504313219]
+layout_mode = 2
+max_value = 30.0
+show_percentage = false
+
+[node name="HpValue" type="Label" parent="." unique_id=144807822]
+layout_mode = 2
+text = "0 / 0"
+horizontal_alignment = 1
+
+[node name="Effects" type="HBoxContainer" parent="." unique_id=1630636039]
+layout_mode = 2
+alignment = 1

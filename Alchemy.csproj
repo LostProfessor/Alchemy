@@ -1,0 +1,19 @@
+<Project Sdk="Godot.NET.Sdk/4.6.2">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <Nullable>enable</Nullable>
+    <LangVersion>13.0</LangVersion>
+    <RootNamespace>Alchemy</RootNamespace>
+    <!-- 逻辑层在 Alchemy.Core（纯 C# 库），这里只编译 Godot 表现层脚本 -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="src/Nodes/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="src/Alchemy.Core/Alchemy.Core.csproj" />
+  </ItemGroup>
+</Project>

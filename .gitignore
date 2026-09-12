@@ -1,0 +1,25 @@
+# Godot
+.godot/
+.cache/
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+.vsconfig
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Godot 导出预设（含本机路径/密钥，按需再提交）
+export_presets.cfg
+
+# 杂项
+*.tmp
+*.log
+TestResults/

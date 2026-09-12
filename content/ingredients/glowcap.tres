@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://b6lc1j8ru8hm0"]
+
+[ext_resource type="Texture2D" uid="uid://dgoc4h0ke8u1l" path="res://Theme/textures/ingredients/glowcap.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Effect = 1
+Amount = 2
+
+[resource]
+script = ExtResource("1_s")
+Id = "glowcap"
+DisplayName = "萤光菇"
+Description = "入口清凉，缓缓恢复生命。"
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1")]

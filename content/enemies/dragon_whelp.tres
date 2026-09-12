@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EnemyResource" format=3]
+
+[ext_resource type="Script" uid="uid://dmchvfmmhv02t" path="res://src/Nodes/EnemyResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dce5hrk86vhcv" path="res://src/Nodes/IntentionResource.cs" id="2_int"]
+
+[sub_resource type="Resource" id="int1"]
+script = ExtResource("2_int")
+DisplayName = "攻击"
+IntervalSeconds = 30.0
+Damage = 20
+
+[sub_resource type="Resource" id="int2"]
+script = ExtResource("2_int")
+DisplayName = "防御"
+IntervalSeconds = 30.0
+ActionType = 1
+Block = 12
+
+[resource]
+script = ExtResource("1_s")
+Id = "dragon_whelp"
+DisplayName = "幼龙"
+MaxHp = 52
+Intentions = [SubResource("int1"), SubResource("int2")]

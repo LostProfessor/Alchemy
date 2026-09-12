@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://crp3pxl708abl"]
+
+[ext_resource type="Script" path="res://src/Nodes/RewardPanel.cs" id="1_rp"]
+
+[sub_resource type="StyleBoxFlat" id="rp_bg"]
+content_margin_left = 18.0
+content_margin_top = 14.0
+content_margin_right = 18.0
+content_margin_bottom = 16.0
+bg_color = Color(0.12, 0.1, 0.16, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.45, 0.6, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="RewardPanel" type="PanelContainer" node_paths=PackedStringArray("_list")]
+script = ExtResource("1_rp")
+theme_override_styles/panel = SubResource("rp_bg")
+_list = NodePath("List")
+
+[node name="List" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8

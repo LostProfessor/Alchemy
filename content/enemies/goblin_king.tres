@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EnemyResource" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/EnemyResource.cs" id="1_s"]
+[ext_resource type="Script" path="res://src/Nodes/IntentionResource.cs" id="2_int"]
+
+[sub_resource type="Resource" id="int1"]
+script = ExtResource("2_int")
+DisplayName = "攻击"
+IntervalSeconds = 22.0
+ActionType = 0
+Damage = 8
+
+[sub_resource type="Resource" id="int2"]
+script = ExtResource("2_int")
+DisplayName = "防御"
+IntervalSeconds = 22.0
+ActionType = 1
+Block = 6
+
+[sub_resource type="Resource" id="int3"]
+script = ExtResource("2_int")
+DisplayName = "猛击"
+IntervalSeconds = 22.0
+ActionType = 0
+Damage = 10
+
+[resource]
+script = ExtResource("1_s")
+Id = "goblin_king"
+DisplayName = "哥布林王"
+MaxHp = 35
+Intentions = Array[Resource]([SubResource("int1"), SubResource("int2"), SubResource("int3")])

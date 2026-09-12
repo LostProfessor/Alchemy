@@ -1,0 +1,40 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/EventResource.cs" id="1_e"]
+[ext_resource type="Script" path="res://src/Nodes/EventChoiceResource.cs" id="2_c"]
+[ext_resource type="Script" path="res://src/Nodes/EventActionResource.cs" id="3_a"]
+
+[sub_resource type="Resource" id="a1"]
+script = ExtResource("3_a")
+Type = 1
+Amount = 8
+
+[sub_resource type="Resource" id="a2"]
+script = ExtResource("3_a")
+Type = 6
+Amount = 30
+
+[sub_resource type="Resource" id="a3"]
+script = ExtResource("3_a")
+Type = 9
+
+[sub_resource type="Resource" id="c1"]
+script = ExtResource("2_c")
+Label = "包扎伤口（恢复 8 生命）"
+Actions = Array[Resource]([SubResource("a1")])
+
+[sub_resource type="Resource" id="c2"]
+script = ExtResource("2_c")
+Label = "分给他 30 货币，换一件普通遗物"
+Actions = Array[Resource]([SubResource("a2"), SubResource("a3")])
+
+[sub_resource type="Resource" id="c3"]
+script = ExtResource("2_c")
+Label = "离开"
+
+[resource]
+script = ExtResource("1_e")
+Id = "wounded_hunter"
+Title = "受伤的猎人"
+Description = "一位猎人在路边哀嚎，腿上的伤口触目惊心。"
+Choices = Array[Resource]([SubResource("c1"), SubResource("c2"), SubResource("c3")])

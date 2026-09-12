@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EncounterTableResource" format=3 uid="uid://5dg0ikvfne3g"]
+
+[ext_resource type="Script" uid="uid://d1dlti007x63b" path="res://src/Nodes/EncounterTableResource.cs" id="1_t"]
+[ext_resource type="Script" uid="uid://bqi7mc50yhm1s" path="res://src/Nodes/EncounterEntryResource.cs" id="2_e"]
+
+[sub_resource type="Resource" id="e1"]
+script = ExtResource("2_e")
+Id = "troll"
+MonsterIds = "troll"
+
+[sub_resource type="Resource" id="e2"]
+script = ExtResource("2_e")
+Id = "ogre"
+MonsterIds = "ogre"
+
+[sub_resource type="Resource" id="e3"]
+script = ExtResource("2_e")
+Id = "cultist_pair"
+MonsterIds = "cultist, cultist"
+
+[sub_resource type="Resource" id="boss"]
+script = ExtResource("2_e")
+Id = "boss_golem"
+MonsterIds = "golem_boss"
+BossId = "golem_boss"
+
+[resource]
+script = ExtResource("1_t")
+ActIndex = 3
+Normal = Array[Resource]([SubResource("e1"), SubResource("e2"), SubResource("e3")])
+Boss = SubResource("boss")

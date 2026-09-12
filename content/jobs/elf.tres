@@ -1,0 +1,27 @@
+[gd_resource type="Resource" format=3 uid="uid://x8b3n6e9r2u5v"]
+
+[ext_resource type="Script" path="res://src/Nodes/JobResource.cs" id="1_job"]
+[ext_resource type="Script" path="res://src/Nodes/JobStarterIngredient.cs" id="2_start"]
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2_start")
+Id = "bitterroot"
+Count = 3
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2_start")
+Id = "ash"
+Count = 3
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2_start")
+Id = "cindercrystal"
+Count = 1
+
+[resource]
+script = ExtResource("1_job")
+Id = "elf"
+DisplayName = "精灵"
+BaseLiquidId = "oil"
+RelicId = "oil_craft"
+StarterIngredients = Array[Resource]([SubResource("s1"), SubResource("s2"), SubResource("s3")])

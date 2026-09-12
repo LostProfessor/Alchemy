@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="EnemyResource" format=3]
+[ext_resource type="Texture2D" uid="uid://dkqe8lwm636br" path="res://Theme/textures/enemies/goblin_shaman.png" id="1_icon"]
+
+[ext_resource type="Script" uid="uid://dmchvfmmhv02t" path="res://src/Nodes/EnemyResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dce5hrk86vhcv" path="res://src/Nodes/IntentionResource.cs" id="2_int"]
+
+[sub_resource type="Resource" id="int1"]
+script = ExtResource("2_int")
+DisplayName = "攻击"
+IntervalSeconds = 26.0
+Damage = 9
+
+[sub_resource type="Resource" id="int2"]
+script = ExtResource("2_int")
+DisplayName = "施法"
+IntervalSeconds = 26.0
+ActionType = 2
+Effect = 8
+EffectLayers = 1
+
+[resource]
+Icon = ExtResource("1_icon")
+script = ExtResource("1_s")
+Id = "goblin_shaman"
+DisplayName = "哥布林萨满"
+MaxHp = 22
+Intentions = [SubResource("int1"), SubResource("int2")]

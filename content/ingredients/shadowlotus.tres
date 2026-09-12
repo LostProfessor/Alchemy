@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://c8hc1f06jny32"]
+
+[ext_resource type="Texture2D" uid="uid://bcwi4lxc0bf3" path="res://Theme/textures/ingredients/shadowlotus.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Effect = 12
+Amount = 2
+
+[sub_resource type="Resource" id="op2"]
+script = ExtResource("2_op")
+Effect = 14
+
+[resource]
+script = ExtResource("1_s")
+Id = "shadowlotus"
+DisplayName = "影莲"
+Description = "生于暗影，伤人亦自损。"
+Rarity = 2
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1"), SubResource("op2")]

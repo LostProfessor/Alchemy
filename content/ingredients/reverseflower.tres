@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://4i5rxuu0npdj"]
+
+[ext_resource type="Texture2D" uid="uid://cu218f2ohxj6m" path="res://Theme/textures/ingredients/reverseflower.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Type = 4
+Amount = 0
+
+[resource]
+script = ExtResource("1_s")
+Id = "reverseflower"
+DisplayName = "逆鳞花"
+Description = "花叶颠倒，药性尽数反转。"
+Rarity = 3
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1")]

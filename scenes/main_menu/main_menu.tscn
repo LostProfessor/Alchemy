@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://d068rvxyo0oy8"]
+
+[ext_resource type="Script" uid="uid://b2j2qlhmiw3e3" path="res://src/Nodes/MainMenuNode.cs" id="1_fsom3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1b6gl"]
+line_spacing = 3.32
+font_size = 145
+
+[node name="MainMenu" type="Control" unique_id=1083669597 node_paths=PackedStringArray("_seedInput", "_startBtn", "_continueBtn", "_quitBtn")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 149.0
+offset_top = 100.0
+offset_right = 149.0
+offset_bottom = 100.0
+script = ExtResource("1_fsom3")
+_seedInput = NodePath("SeedPaneltemp/LineEdit")
+_startBtn = NodePath("VBoxContainer/StartBtn")
+_continueBtn = NodePath("VBoxContainer/ContinueBtn")
+_quitBtn = NodePath("VBoxContainer/QuitBtn")
+
+[node name="Label" type="Label" parent="." unique_id=1532471916]
+layout_mode = 0
+offset_left = -102.0
+offset_top = -50.0
+offset_right = 298.0
+offset_bottom = 88.0
+text = "我是标题"
+label_settings = SubResource("LabelSettings_1b6gl")
+
+[node name="SeedPaneltemp" type="VBoxContainer" parent="." unique_id=1588334689]
+layout_mode = 0
+offset_left = -42.0
+offset_top = 570.0
+offset_right = 200.49
+offset_bottom = 601.0
+
+[node name="LineEdit" type="LineEdit" parent="SeedPaneltemp" unique_id=1210274709]
+layout_mode = 2
+placeholder_text = "输入种子：（留空以随机生成）"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=814946115]
+layout_mode = 0
+offset_left = 657.0
+offset_top = 430.0
+offset_right = 937.0
+offset_bottom = 566.0
+
+[node name="StartBtn" type="Button" parent="VBoxContainer" unique_id=1657497738]
+layout_mode = 2
+text = "开始游戏"
+
+[node name="ContinueBtn" type="Button" parent="VBoxContainer" unique_id=1867532064]
+layout_mode = 2
+text = "继续游戏"
+
+[node name="QuitBtn" type="Button" parent="VBoxContainer" unique_id=1527648422]
+layout_mode = 2
+text = "退出游戏"
+
+[node name="ConfigBtn" type="Button" parent="VBoxContainer" unique_id=137650493]
+layout_mode = 2
+text = "游戏设置"
+
+[node name="MapButton" type="Button" parent="." unique_id=717890595]
+layout_mode = 0
+offset_left = 991.0
+offset_top = 39.0
+offset_right = 1071.0
+offset_bottom = 119.0
+text = "进入地图"

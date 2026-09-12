@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "runecrown"
+DisplayName = "符文王冠"
+Description = "战斗开始时，获得 2 层不朽（一段时间内生命不会低于 2 点）。"

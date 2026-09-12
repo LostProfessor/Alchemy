@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "stoneheart"
+DisplayName = "石之心"
+Description = "战斗开始时，获得 3 点格挡。"

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://g7h8i9j0k1l2m"]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "oil_craft"
+DisplayName = "腐蚀手册"
+Description = "精灵专属。记载浓油腐蚀之术的手册。（效果待设计）"

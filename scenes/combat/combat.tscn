@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://hahccfl4ovxa"]
+
+[ext_resource type="Script" uid="uid://btqo68yd20md8" path="res://src/Nodes/CombatNode.cs" id="1_7kvby"]
+[ext_resource type="PackedScene" uid="uid://bkj1jcunsdu4" path="res://scenes/ui/cauldron.tscn" id="4_cauldron"]
+[ext_resource type="PackedScene" uid="uid://c28tnuj7ubgam" path="res://scenes/ui/pocket.tscn" id="5_pocket"]
+[ext_resource type="PackedScene" path="res://scenes/ui/debug_panel.tscn" id="6_jgg25"]
+[ext_resource type="PackedScene" uid="uid://qqlxo6t1b2yp" path="res://scenes/ui/player_view.tscn" id="6_playerview"]
+[ext_resource type="PackedScene" path="res://scenes/ui/top_bar.tscn" id="7_topbar"]
+[ext_resource type="PackedScene" path="res://scenes/ui/reward_panel.tscn" id="8_reward"]
+
+[node name="CombatNode" type="Control" unique_id=904293761 node_paths=PackedStringArray("_enemyContainer", "_playerView", "_statusLabel", "_pocket", "_cauldron", "_brewSlots", "_completeBtn", "_brewStatus", "_potionArea", "_rewardPanel", "_debugPanel", "_baseAquaBtn", "_baseOilBtn", "_baseSlimeBtn")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_7kvby")
+_enemyContainer = NodePath("World/Enemies")
+_playerView = NodePath("HUD/PlayerView")
+_statusLabel = NodePath("HUD/Status")
+_pocket = NodePath("HUD/Pocket")
+_cauldron = NodePath("HUD/Cauldron")
+_brewSlots = NodePath("HUD/BrewSlots")
+_completeBtn = NodePath("HUD/CompleteBtn")
+_brewStatus = NodePath("HUD/BrewStatus")
+_potionArea = NodePath("HUD/PotionArea")
+_rewardPanel = NodePath("HUD/RewardPanel")
+_debugPanel = NodePath("DebugPanel")
+_baseAquaBtn = NodePath("HUD/BaseChoose/AquaBase")
+_baseOilBtn = NodePath("HUD/BaseChoose/OilBase")
+_baseSlimeBtn = NodePath("HUD/BaseChoose/SlimeBase")
+
+[node name="World" type="CanvasLayer" parent="." unique_id=289091675]
+
+[node name="Enemies" type="HBoxContainer" parent="World" unique_id=869447142]
+offset_left = 652.0
+offset_top = 198.0
+offset_right = 1232.0
+offset_bottom = 418.0
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1230166160]
+layer = 10
+
+[node name="TopBar" parent="HUD" unique_id=1230166161 instance=ExtResource("7_topbar")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+
+[node name="Pocket" parent="HUD" unique_id=780504867 instance=ExtResource("5_pocket")]
+offset_left = 363.0
+offset_top = 598.0
+offset_right = 1250.0
+offset_bottom = 678.0
+
+[node name="PlayerView" parent="HUD" unique_id=1972743890 instance=ExtResource("6_playerview")]
+offset_left = 46.0
+offset_top = 100.0
+offset_right = 256.0
+offset_bottom = 400.0
+
+[node name="Status" type="Label" parent="HUD" unique_id=1807850500]
+offset_left = 32.0
+offset_top = 266.0
+offset_right = 222.0
+offset_bottom = 318.0
+
+[node name="Cauldron" parent="HUD" unique_id=1503650347 instance=ExtResource("4_cauldron")]
+offset_left = 17.0
+offset_top = 492.0
+offset_right = 332.0
+offset_bottom = 707.0
+
+[node name="BrewSlots" type="HBoxContainer" parent="HUD" unique_id=1375770421]
+offset_left = 3.0
+offset_top = 320.0
+offset_right = 360.0
+offset_bottom = 389.0
+
+[node name="CompleteBtn" type="Button" parent="HUD" unique_id=1452384993]
+offset_left = 458.0
+offset_top = 532.0
+offset_right = 546.0
+offset_bottom = 565.0
+text = "Complete"
+
+[node name="BrewStatus" type="Label" parent="HUD" unique_id=142294338]
+offset_left = 344.0
+offset_top = 524.0
+offset_right = 450.0
+offset_bottom = 574.0
+
+[node name="PotionArea" type="HBoxContainer" parent="HUD" unique_id=1583297256]
+offset_left = 56.0
+offset_top = 65.0
+offset_right = 207.0
+offset_bottom = 105.0
+mouse_filter = 0
+
+[node name="BaseChoose" type="HBoxContainer" parent="HUD" unique_id=280675007]
+offset_left = 22.0
+offset_top = 437.0
+offset_right = 341.0
+offset_bottom = 492.0
+
+[node name="AquaBase" type="Button" parent="HUD/BaseChoose" unique_id=1633034994]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "清水"
+
+[node name="OilBase" type="Button" parent="HUD/BaseChoose" unique_id=1029422459]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = " 油 "
+
+[node name="SlimeBase" type="Button" parent="HUD/BaseChoose" unique_id=2129068136]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "神秘黏液
+"
+
+[node name="RewardPanel" parent="HUD" unique_id=2017381994 instance=ExtResource("8_reward")]
+offset_left = 343.0
+offset_top = 160.0
+offset_right = 921.0
+offset_bottom = 515.0
+
+[node name="Popup" type="CanvasLayer" parent="." unique_id=2078689443]
+layer = 20
+
+[node name="DebugPanel" parent="." unique_id=1710852560 instance=ExtResource("6_jgg25")]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 5.0
+offset_right = 624.0
+offset_bottom = 410.0

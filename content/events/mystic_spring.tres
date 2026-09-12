@@ -1,0 +1,26 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/EventResource.cs" id="1_e"]
+[ext_resource type="Script" path="res://src/Nodes/EventChoiceResource.cs" id="2_c"]
+[ext_resource type="Script" path="res://src/Nodes/EventActionResource.cs" id="3_a"]
+
+[sub_resource type="Resource" id="a1"]
+script = ExtResource("3_a")
+Type = 2
+Amount = 5
+
+[sub_resource type="Resource" id="c1"]
+script = ExtResource("2_c")
+Label = "痛饮（生命上限 +5）"
+Actions = Array[Resource]([SubResource("a1")])
+
+[sub_resource type="Resource" id="c2"]
+script = ExtResource("2_c")
+Label = "离开"
+
+[resource]
+script = ExtResource("1_e")
+Id = "mystic_spring"
+Title = "神秘泉水"
+Description = "清泉在月下泛着微光，喝下它或许能让你变得更坚韧。"
+Choices = Array[Resource]([SubResource("c1"), SubResource("c2")])

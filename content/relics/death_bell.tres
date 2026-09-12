@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "death_bell"
+DisplayName = "死亡之钟"
+Description = "战斗开始时，所有敌人获得 1 层迟钝（计时操作更慢）。"

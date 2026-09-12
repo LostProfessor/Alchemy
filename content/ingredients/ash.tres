@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://dop72ceokscp7"]
+
+[ext_resource type="Texture2D" uid="uid://ccbj7u7eio7np" path="res://Theme/textures/ingredients/ash.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Effect = 3
+
+[sub_resource type="Resource" id="op2"]
+script = ExtResource("2_op")
+Effect = 8
+
+[resource]
+script = ExtResource("1_s")
+Id = "ash"
+DisplayName = "灰烬"
+Description = "余温未散，灼痛且令人破绽百出。"
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1"), SubResource("op2")]

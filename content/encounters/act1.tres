@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EncounterTableResource" format=3 uid="uid://ce0eiaac3b4tu"]
+
+[ext_resource type="Script" uid="uid://d1dlti007x63b" path="res://src/Nodes/EncounterTableResource.cs" id="1_t"]
+[ext_resource type="Script" uid="uid://bqi7mc50yhm1s" path="res://src/Nodes/EncounterEntryResource.cs" id="2_e"]
+
+[sub_resource type="Resource" id="e1"]
+script = ExtResource("2_e")
+Id = "slime_pair"
+MonsterIds = "slime, slime"
+
+[sub_resource type="Resource" id="e2"]
+script = ExtResource("2_e")
+Id = "wolf"
+MonsterIds = "wolf"
+
+[sub_resource type="Resource" id="e3"]
+script = ExtResource("2_e")
+Id = "goblin_trio"
+MonsterIds = "goblin, goblin, goblin"
+
+[sub_resource type="Resource" id="boss"]
+script = ExtResource("2_e")
+Id = "boss_goblin_king"
+MonsterIds = "goblin_king"
+BossId = "goblin_king"
+
+[resource]
+script = ExtResource("1_t")
+ActIndex = 1
+Normal = Array[Resource]([SubResource("e1"), SubResource("e2"), SubResource("e3")])
+Boss = SubResource("boss")

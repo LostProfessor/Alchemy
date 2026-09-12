@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyResource" format=3]
+[ext_resource type="Texture2D" uid="uid://818t8eoqeohe" path="res://Theme/textures/enemies/wight.png" id="1_icon"]
+
+[ext_resource type="Script" uid="uid://dmchvfmmhv02t" path="res://src/Nodes/EnemyResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dce5hrk86vhcv" path="res://src/Nodes/IntentionResource.cs" id="2_int"]
+
+[sub_resource type="Resource" id="int1"]
+script = ExtResource("2_int")
+DisplayName = "攻击"
+IntervalSeconds = 28.0
+Damage = 14
+
+[resource]
+Icon = ExtResource("1_icon")
+script = ExtResource("1_s")
+Id = "wight"
+DisplayName = "尸鬼"
+MaxHp = 36
+Intentions = [SubResource("int1")]

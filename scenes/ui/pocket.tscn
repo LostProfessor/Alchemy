@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://c28tnuj7ubgam"]
+
+[ext_resource type="Script" uid="uid://dwtbf7hsu7g2m" path="res://src/Nodes/PocketPanel.cs" id="1_pocket"]
+
+[sub_resource type="StyleBoxFlat" id="pocket_bg"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.07, 0.09, 0.12, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.28, 0.34, 0.42, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Pocket" type="PanelContainer" unique_id=649828590 node_paths=PackedStringArray("_scroll", "_bar")]
+theme_override_styles/panel = SubResource("pocket_bg")
+script = ExtResource("1_pocket")
+_scroll = NodePath("Scroll")
+_bar = NodePath("Scroll/Bar")
+
+[node name="Scroll" type="ScrollContainer" parent="." unique_id=367769773]
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="Bar" type="HBoxContainer" parent="Scroll" unique_id=1640970181]
+layout_mode = 2
+size_flags_horizontal = 3

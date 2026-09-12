@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://bqe8y8ln8201w"]
+
+[ext_resource type="Script" path="res://src/Nodes/TopBar.cs" id="1_tb"]
+
+[sub_resource type="StyleBoxFlat" id="topbar_bg"]
+content_margin_left = 14.0
+content_margin_top = 5.0
+content_margin_right = 14.0
+content_margin_bottom = 5.0
+bg_color = Color(0.06, 0.07, 0.1, 0.9)
+
+[node name="TopBar" type="PanelContainer" node_paths=PackedStringArray("_floorLabel", "_hpLabel", "_currencyLabel", "_pocketLabel", "_combatTimeLabel", "_totalTimeLabel", "_settingsBtn")]
+script = ExtResource("1_tb")
+theme_override_styles/panel = SubResource("topbar_bg")
+_floorLabel = NodePath("Row/FloorLabel")
+_hpLabel = NodePath("Row/HpLabel")
+_currencyLabel = NodePath("Row/CurrencyLabel")
+_pocketLabel = NodePath("Row/PocketLabel")
+_combatTimeLabel = NodePath("Row/CombatTimeLabel")
+_totalTimeLabel = NodePath("Row/TotalTimeLabel")
+_settingsBtn = NodePath("Row/SettingsBtn")
+
+[node name="Row" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="FloorLabel" type="Label" parent="Row"]
+layout_mode = 2
+text = "第 1 层"
+
+[node name="HpLabel" type="Label" parent="Row"]
+layout_mode = 2
+text = "HP 0/0 · 护盾 0"
+
+[node name="CurrencyLabel" type="Label" parent="Row"]
+layout_mode = 2
+text = "货币 0"
+
+[node name="PocketLabel" type="Label" parent="Row"]
+layout_mode = 2
+text = "口袋 0"
+
+[node name="CombatTimeLabel" type="Label" parent="Row"]
+layout_mode = 2
+text = "战斗 0s"
+
+[node name="TotalTimeLabel" type="Label" parent="Row"]
+layout_mode = 2
+text = "总时长 00:00"
+
+[node name="SettingsBtn" type="Button" parent="Row"]
+layout_mode = 2
+text = "设置"

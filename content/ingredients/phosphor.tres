@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://cmeig3to4skjm"]
+
+[ext_resource type="Texture2D" uid="uid://x2taxreek82s" path="res://Theme/textures/ingredients/phosphor.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Effect = 11
+Amount = 2
+
+[resource]
+script = ExtResource("1_s")
+Id = "phosphor"
+DisplayName = "磷粉"
+Description = "幽幽冷光，令人神志恍惚。"
+Rarity = 1
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1")]

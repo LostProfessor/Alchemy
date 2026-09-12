@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "thorn_cloak"
+DisplayName = "荆棘斗篷"
+Description = "战斗开始时，获得 2 层棘皮（下次受到伤害时反伤，最高 2 点）。"

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "abyss_heart"
+DisplayName = "深渊之心"
+Description = "战斗开始时，获得 1 层祝福（每次行动回复 1 点生命）。"

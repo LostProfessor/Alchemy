@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://r1a2b3c4d5e6f"]
+
+[ext_resource type="Script" path="res://src/Nodes/RelicResource.cs" id="1_r"]
+
+[resource]
+script = ExtResource("1_r")
+Id = "aqua_craft"
+DisplayName = "炼金典籍"
+Description = "研究员专属。记载完整清水炼金配方的典籍。（效果待设计）"

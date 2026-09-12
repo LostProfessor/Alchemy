@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="IngredientResource" format=3 uid="uid://cx3ni6cmh4m11"]
+
+[ext_resource type="Texture2D" uid="uid://c62ks2o1h0clv" path="res://Theme/textures/ingredients/vine.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://bxlx810sst06f" path="res://src/Nodes/IngredientResource.cs" id="1_s"]
+[ext_resource type="Script" uid="uid://dk65gy05rl4bo" path="res://src/Nodes/AffixOpResource.cs" id="2_op"]
+
+[sub_resource type="Resource" id="op1"]
+script = ExtResource("2_op")
+Effect = 2
+Amount = 2
+
+[sub_resource type="Resource" id="op2"]
+script = ExtResource("2_op")
+Effect = 8
+
+[resource]
+script = ExtResource("1_s")
+Id = "vine"
+DisplayName = "绞藤"
+Description = "坚韧缠绕，束缚他人也暴露自身。"
+Rarity = 1
+Icon = ExtResource("1_icon")
+AffixOps = [SubResource("op1"), SubResource("op2")]

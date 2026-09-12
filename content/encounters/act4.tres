@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EncounterTableResource" format=3 uid="uid://d2suls4y4m5kr"]
+
+[ext_resource type="Script" uid="uid://d1dlti007x63b" path="res://src/Nodes/EncounterTableResource.cs" id="1_t"]
+[ext_resource type="Script" uid="uid://bqi7mc50yhm1s" path="res://src/Nodes/EncounterEntryResource.cs" id="2_e"]
+
+[sub_resource type="Resource" id="e1"]
+script = ExtResource("2_e")
+Id = "wight"
+MonsterIds = "wight"
+
+[sub_resource type="Resource" id="e2"]
+script = ExtResource("2_e")
+Id = "dark_knight"
+MonsterIds = "dark_knight"
+
+[sub_resource type="Resource" id="e3"]
+script = ExtResource("2_e")
+Id = "banshee"
+MonsterIds = "banshee"
+
+[sub_resource type="Resource" id="boss"]
+script = ExtResource("2_e")
+Id = "boss_lich_king"
+MonsterIds = "lich_king"
+BossId = "lich_king"
+
+[resource]
+script = ExtResource("1_t")
+ActIndex = 4
+Normal = Array[Resource]([SubResource("e1"), SubResource("e2"), SubResource("e3")])
+Boss = SubResource("boss")

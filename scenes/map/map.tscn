@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dxnrpmjptaglr"]
+
+[ext_resource type="Script" uid="uid://dl3g34xq7ht1t" path="res://src/Nodes/MapNode.cs" id="1_sxf4j"]
+[ext_resource type="PackedScene" path="res://scenes/ui/top_bar.tscn" id="2_a2pkv"]
+[ext_resource type="PackedScene" uid="uid://cljtnwdluijl" path="res://scenes/ui/relic_bar.tscn" id="3_ph54e"]
+
+[node name="Map" type="Control" unique_id=1007394259 node_paths=PackedStringArray("_mapScroll", "_mapCanvas", "_roomPanel", "_pocketPanel")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_sxf4j")
+_mapScroll = NodePath("MapScroll")
+_mapCanvas = NodePath("MapScroll/MapCanvas")
+_roomPanel = NodePath("RoomPanel")
+_pocketPanel = NodePath("PocketPanel")
+
+[node name="MapScroll" type="ScrollContainer" parent="." unique_id=768643530]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="MapCanvas" type="Control" parent="MapScroll" unique_id=1590901330]
+layout_mode = 2
+
+[node name="TopBar2" parent="." unique_id=1513005338 instance=ExtResource("2_a2pkv")]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1.0
+offset_top = 2.0
+offset_right = 1279.0
+offset_bottom = 29.0
+grow_horizontal = 2
+
+[node name="RoomPanel" type="PanelContainer" parent="." unique_id=1126970379]
+visible = false
+layout_mode = 1
+offset_right = 1280.0
+offset_bottom = 712.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=945557599]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 150.0
+offset_right = 102.0
+offset_bottom = 199.0
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=390273879]
+visible = false
+layout_mode = 2
+text = "展示区（下面
+放遗物之类的"
+
+[node name="PocketPanel" type="PanelContainer" parent="." unique_id=1805298887]
+visible = false
+layout_mode = 0
+offset_right = 1283.0
+offset_bottom = 718.0
+
+[node name="RelicBar" parent="." unique_id=1518166846 instance=ExtResource("3_ph54e")]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 33.0
+offset_right = 26.0
+offset_bottom = 57.0
