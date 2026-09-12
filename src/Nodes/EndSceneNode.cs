@@ -34,7 +34,7 @@ public partial class EndSceneNode : Control
 
 		if (_titleLabel != null)
 		{
-			_titleLabel.Text = win ? "🎉 通关！" : "💀 你倒下了…";
+			_titleLabel.Text = win ? L.T("🎉 通关！") : L.T("💀 你倒下了…");
 		}
 
 		if (_statsLabel == null || mgr == null)
@@ -43,12 +43,12 @@ public partial class EndSceneNode : Control
 		}
 
 		var job = ContentCatalog.GetJob(mgr.JobId)?.DisplayName ?? mgr.JobId;
-		_statsLabel.Text =
-			$"职业：{job}\n" +
-			$"到达：第 {mgr.ActIndex} 大层\n" +
-			$"货币：{mgr.Run.Currency}\n" +
-			$"口袋药材：{mgr.Run.Pocket.TotalCount}\n" +
-			$"总时长：{FormatTime(_game.RunTotalSeconds)}";
+		_statsLabel.Text = string.Join("\n",
+			L.F("职业：{0}", L.T(job)),
+			L.F("到达：第 {0} 大层", mgr.ActIndex),
+			L.F("货币：{0}", mgr.Run.Currency),
+			L.F("口袋药材：{0}", mgr.Run.Pocket.TotalCount),
+			L.F("总时长：{0}", FormatTime(_game.RunTotalSeconds)));
 	}
 
 	private void BackToMenu()

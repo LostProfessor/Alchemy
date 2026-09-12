@@ -29,7 +29,7 @@ public partial class ShopRoomNode : RoomNodeBase
 
 		var title = new Label
 		{
-			Text = "🏪 商店",
+			Text = L.T("🏪 商店"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		};
 		title.AddThemeFontSizeOverride("font_size", 34);
@@ -37,13 +37,13 @@ public partial class ShopRoomNode : RoomNodeBase
 
 		Content.AddChild(new Label
 		{
-			Text = "老板神秘地笑了笑，示意你看看货架。",
+			Text = L.T("老板神秘地笑了笑，示意你看看货架。"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 			Modulate = new Color(0.75f, 0.75f, 0.75f),
 		});
 		Content.AddChild(new HSeparator());
 
-		_moneyLabel = new Label { Text = $"货币：{mgr.Run.Currency}" };
+		_moneyLabel = new Label { Text = L.F("货币：{0}", mgr.Run.Currency) };
 		_moneyLabel.AddThemeFontSizeOverride("font_size", 22);
 		Content.AddChild(_moneyLabel);
 
@@ -59,7 +59,7 @@ public partial class ShopRoomNode : RoomNodeBase
 
 			var info = new Label
 			{
-				Text = $"{ItemText(item)}   ·   {item.Price} 货币",
+				Text = L.F("{0}   ·   {1} 货币", ItemText(item), item.Price),
 				SizeFlagsHorizontal = SizeFlags.ExpandFill,
 				Modulate = ItemColor(item),
 			};
@@ -67,7 +67,7 @@ public partial class ShopRoomNode : RoomNodeBase
 
 			var buy = new Button
 			{
-				Text = item.Sold ? "已售" : "购买",
+				Text = item.Sold ? L.T("已售") : L.T("购买"),
 				Disabled = item.Sold || !affordable,
 			};
 			int index = i;
@@ -81,7 +81,7 @@ public partial class ShopRoomNode : RoomNodeBase
 
 		var leave = new Button
 		{
-			Text = "离开商店",
+			Text = L.T("离开商店"),
 			CustomMinimumSize = new Vector2(420, 0),
 		};
 		leave.Pressed += () =>
@@ -106,7 +106,7 @@ public partial class ShopRoomNode : RoomNodeBase
 		}
 		else if (_moneyLabel != null)
 		{
-			_moneyLabel.Text = $"货币：{mgr.Run.Currency}（买不起这件）";
+			_moneyLabel.Text = L.F("货币：{0}（买不起这件）", mgr.Run.Currency);
 		}
 	}
 
@@ -115,12 +115,12 @@ public partial class ShopRoomNode : RoomNodeBase
 	{
 		if (item.IsRelic && item.Relic != null)
 		{
-			return ContentCatalog.GetRelicResource(item.Relic.Id)?.DisplayName ?? item.Relic.DisplayName;
+			return L.T(ContentCatalog.GetRelicResource(item.Relic.Id)?.DisplayName ?? item.Relic.DisplayName);
 		}
 
 		if (item.IsIngredientBag && item.IngredientBag != null)
 		{
-			return $"药材袋：{BagSummary(item.IngredientBag)}";
+			return L.F("药材袋：{0}", BagSummary(item.IngredientBag));
 		}
 
 		return "?";

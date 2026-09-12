@@ -43,7 +43,7 @@ public partial class PlayerView : TargetZone
 
 		if (_hpText != null)
 		{
-			_hpText.Text = $"{_player.Name}  {_player.CurrentHp}/{_player.MaxHp}   护盾 {_player.Block}";
+			_hpText.Text = L.F("{0}  {1}/{2}   护盾 {3}", L.T(_player.Name), _player.CurrentHp, _player.MaxHp, _player.Block);
 		}
 
 		CombatUi.RefreshEffects(_effectsBar, _player);

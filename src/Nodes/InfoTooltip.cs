@@ -88,9 +88,9 @@ public partial class InfoTooltip : PanelContainer
 	{
 		ClearBody();
 
-		_title.Text = ingredient.DisplayName;
+		_title.Text = L.T(ingredient.DisplayName);
 		_title.Modulate = RarityColor(ingredient.Rarity);
-		_desc.Text = ContentCatalog.GetIngredientDescription(ingredient.Id);
+		_desc.Text = L.T(ContentCatalog.GetIngredientDescription(ingredient.Id));
 		_desc.Visible = !string.IsNullOrWhiteSpace(_desc.Text);
 
 		// 增减效果（重点）
@@ -114,9 +114,9 @@ public partial class InfoTooltip : PanelContainer
 	{
 		ClearBody();
 
-		_title.Text = displayName;
+		_title.Text = L.T(displayName);
 		_title.Modulate = RelicRarityColor(rarity);
-		_desc.Text = description;
+		_desc.Text = L.T(description);
 		_desc.Visible = !string.IsNullOrWhiteSpace(description);
 
 		Visible = true;
@@ -132,14 +132,14 @@ public partial class InfoTooltip : PanelContainer
 		var (text, color) = op.Type switch
 		{
 			AffixOpType.AddEffect => (
-				$"添加 {EffectName(op.Effect)} ×{op.Amount}",
+				L.F("添加 {0} ×{1}", L.T(EffectName(op.Effect)), op.Amount),
 				PolarityColor(op.Effect)),
 			AffixOpType.RemoveEffect => (
-				$"移除 {EffectName(op.Effect)} ×{op.Amount}",
+				L.F("移除 {0} ×{1}", L.T(EffectName(op.Effect)), op.Amount),
 				new Color(1f, 0.55f, 0.4f)),
-			AffixOpType.RemoveLast => ($"去掉末尾 ×{op.Amount}", Colors.LightGray),
-			AffixOpType.ReverseOrder => ("翻转顺序", Colors.LightGray),
-			AffixOpType.ReversePolarity => ("反转极性", Colors.LightGray),
+			AffixOpType.RemoveLast => (L.F("去掉末尾 ×{0}", op.Amount), Colors.LightGray),
+			AffixOpType.ReverseOrder => (L.T("翻转顺序"), Colors.LightGray),
+			AffixOpType.ReversePolarity => (L.T("反转极性"), Colors.LightGray),
 			_ => (op.ToString(), Colors.LightGray),
 		};
 		return new Label

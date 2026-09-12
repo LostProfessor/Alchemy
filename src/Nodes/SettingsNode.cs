@@ -21,10 +21,11 @@ public partial class SettingsNode : Control
 		("不限制", 0), ("30", 30), ("60", 60), ("120", 120), ("165", 165), ("240", 240),
 	};
 
-	/// <summary>语言档位：locale → 显示名（.po 翻译文件以后放 localization/ 下）。</summary>
+	/// <summary>语言档位：locale → 显示名（选中后再点一次相同项不会重复刷新）。</summary>
+	/// <remarks>显示名用各语言的自称（Endonym），故意不参与翻译；目前只有中文/英文两列翻译。</remarks>
 	private static readonly (string Code, string Name)[] LanguageOptions =
 	{
-		("zh_CN", "简体中文"), ("en", "English"), ("ja", "日本語"), ("ko", "한국어"),
+		("zh_CN", "简体中文"), ("en", "English"),
 	};
 
 	private GameState _game = null!;
@@ -73,7 +74,7 @@ public partial class SettingsNode : Control
 		section.AddChild(LanguageRow());
 		section.AddChild(new Label
 		{
-			Text = "（翻译 .po 文件放 localization/ 后即生效；目前界面仍是中文源串）",
+			Text = L.T("语言切换立即生效（本页会自动刷新）"),
 			Modulate = new Color(0.6f, 0.6f, 0.6f),
 		});
 
@@ -83,7 +84,7 @@ public partial class SettingsNode : Control
 		actions.AddThemeConstantOverride("separation", 12);
 		var saveQuit = new Button
 		{
-			Text = "保存并退出到主菜单",
+			Text = L.T("保存并退出到主菜单"),
 			CustomMinimumSize = new Vector2(220, 0),
 		};
 		saveQuit.Pressed += ConfirmSaveAndQuit;
@@ -106,7 +107,9 @@ public partial class SettingsNode : Control
 
 		_confirmDialog ??= BuildConfirmDialog();
 		_confirmDialog.DialogText =
-			$"保存当前进度并退出到主菜单？\n（第 {mgr.ActIndex} 大层 · 生命 {mgr.Player.CurrentHp}/{mgr.Player.MaxHp}）\n之后可从主菜单「继续」这一局。";
+			L.T("保存当前进度并退出到主菜单？") + "\n" +
+			L.F("（第 {0} 大层 · 生命 {1}/{2}）", mgr.ActIndex, mgr.Player.CurrentHp, mgr.Player.MaxHp) + "\n" +
+			L.T("之后可从主菜单「继续」这一局。");
 		_confirmDialog.PopupCentered();
 	}
 
@@ -115,9 +118,9 @@ public partial class SettingsNode : Control
 	{
 		var dialog = new ConfirmationDialog
 		{
-			Title = "确认",
-			OkButtonText = "保存并退出",
-			CancelButtonText = "取消",
+			Title = L.T("确认"),
+			OkButtonText = L.T("保存并退出"),
+			CancelButtonText = L.T("取消"),
 		};
 		dialog.Confirmed += () =>
 		{
@@ -130,7 +133,7 @@ public partial class SettingsNode : Control
 
 	private static Label SectionTitle(string text)
 	{
-		var label = new Label { Text = text };
+		var label = new Label { Text = L.T(text) };
 		label.AddThemeFontSizeOverride("font_size", 20);
 		return label;
 	}
@@ -141,7 +144,7 @@ public partial class SettingsNode : Control
 		var row = new HBoxContainer();
 		row.AddThemeConstantOverride("separation", 10);
 
-		row.AddChild(new Label { Text = title, CustomMinimumSize = new Vector2(90, 0) });
+		row.AddChild(new Label { Text = L.T(title), CustomMinimumSize = new Vector2(90, 0) });
 
 		var slider = new HSlider
 		{
@@ -176,7 +179,7 @@ public partial class SettingsNode : Control
 	{
 		var row = new HBoxContainer();
 		row.AddThemeConstantOverride("separation", 10);
-		row.AddChild(new Label { Text = "帧率上限", CustomMinimumSize = new Vector2(90, 0) });
+		row.AddChild(new Label { Text = L.T("帧率上限"), CustomMinimumSize = new Vector2(90, 0) });
 
 		var option = new OptionButton
 		{
@@ -186,7 +189,7 @@ public partial class SettingsNode : Control
 		int selected = 0;
 		for (int i = 0; i < FpsOptions.Length; i++)
 		{
-			option.AddItem(FpsOptions[i].Label);
+			option.AddItem(L.T(FpsOptions[i].Label));
 			if (FpsOptions[i].Value == _settings.MaxFps)
 			{
 				selected = i;
@@ -212,7 +215,7 @@ public partial class SettingsNode : Control
 	{
 		var row = new HBoxContainer();
 		row.AddThemeConstantOverride("separation", 10);
-		row.AddChild(new Label { Text = "语言", CustomMinimumSize = new Vector2(90, 0) });
+		row.AddChild(new Label { Text = L.T("语言"), CustomMinimumSize = new Vector2(90, 0) });
 
 		var option = new OptionButton
 		{
@@ -233,10 +236,19 @@ public partial class SettingsNode : Control
 		option.ItemSelected += index =>
 		{
 			int i = (int)index;
-			if (i >= 0 && i < LanguageOptions.Length)
+			if (i < 0 || i >= LanguageOptions.Length)
 			{
-				_settings.Language = LanguageOptions[i].Code;
-				Persist();
+				return;
+			}
+
+			bool changed = _settings.Language != LanguageOptions[i].Code;
+			_settings.Language = LanguageOptions[i].Code;
+			Persist();
+
+			// 语言变了：本页按钮/标签是代码里一次性写好的，重新进入本场景让它们按新语言重建
+			if (changed)
+			{
+				GetTree().ReloadCurrentScene();
 			}
 		};
 
@@ -251,7 +263,7 @@ public partial class SettingsNode : Control
 		SettingsService.Save(_settings);
 		if (_statusLabel != null)
 		{
-			_statusLabel.Text = "设置已保存 ✓";
+			_statusLabel.Text = L.T("设置已保存 ✓");
 		}
 	}
 
@@ -261,14 +273,14 @@ public partial class SettingsNode : Control
 		var mgr = _game.Manager;
 		if (mgr == null)
 		{
-			if (_statusLabel != null) _statusLabel.Text = "当前没有进行中的局";
+			if (_statusLabel != null) _statusLabel.Text = L.T("当前没有进行中的局");
 			return;
 		}
 
 		_game.Save();
 		if (_statusLabel != null)
 		{
-			_statusLabel.Text = $"已保存 ✓（第 {mgr.ActIndex} 层；房内保存=读档重打本房）";
+			_statusLabel.Text = L.F("已保存 ✓（第 {0} 层；房内保存=读档重打本房）", mgr.ActIndex);
 		}
 	}
 

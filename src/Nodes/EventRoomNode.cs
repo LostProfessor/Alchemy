@@ -23,7 +23,7 @@ public partial class EventRoomNode : RoomNodeBase
 
 		var title = new Label
 		{
-			Text = ev.Title,
+			Text = L.T(ev.Title),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		};
 		title.AddThemeFontSizeOverride("font_size", 34);
@@ -33,8 +33,8 @@ public partial class EventRoomNode : RoomNodeBase
 		Content.AddChild(new Label
 		{
 			Text = string.IsNullOrWhiteSpace(desc)
-				? "你遇到了一件奇事，接下来要如何选择？"
-				: desc,
+				? L.T("你遇到了一件奇事，接下来要如何选择？")
+				: L.T(desc),
 			AutowrapMode = TextServer.AutowrapMode.WordSmart,
 			HorizontalAlignment = HorizontalAlignment.Center,
 			Modulate = new Color(0.85f, 0.85f, 0.85f),
@@ -46,7 +46,7 @@ public partial class EventRoomNode : RoomNodeBase
 			var choice = ev.Choices[i];
 			var btn = new Button
 			{
-				Text = choice.Label,
+				Text = L.T(choice.Label),
 				CustomMinimumSize = new Vector2(420, 0),
 			};
 			int index = i;

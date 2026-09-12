@@ -54,35 +54,35 @@ public partial class TopBar : PanelContainer
 		if (_floorLabel != null)
 		{
 			_floorLabel.Text = mgr.CurrentRoom == null
-				? $"第 {mgr.ActIndex} 层"
-				: $"第 {mgr.ActIndex} 层 · {mgr.CurrentRoom.Type}";
+				? L.F("第 {0} 层", mgr.ActIndex)
+				: L.F("第 {0} 层 · {1}", mgr.ActIndex, L.RoomTypeName(mgr.CurrentRoom.Type));
 		}
 
 		if (_hpLabel != null)
 		{
-			_hpLabel.Text = $"{p.Name}  {p.CurrentHp}/{p.MaxHp} · 护盾 {p.Block}";
+			_hpLabel.Text = L.F("{0}  {1}/{2} · 护盾 {3}", L.T(p.Name), p.CurrentHp, p.MaxHp, p.Block);
 		}
 
 		if (_currencyLabel != null)
 		{
-			_currencyLabel.Text = $"货币 {mgr.Run.Currency}";
+			_currencyLabel.Text = L.F("货币 {0}", mgr.Run.Currency);
 		}
 
 		if (_pocketLabel != null)
 		{
-			_pocketLabel.Text = $"口袋 {mgr.Run.Pocket.TotalCount}";
+			_pocketLabel.Text = L.F("口袋 {0}", mgr.Run.Pocket.TotalCount);
 		}
 
 		if (_combatTimeLabel != null)
 		{
 			_combatTimeLabel.Text = mgr.ActiveCombat == null
-				? "战斗 -"
-				: $"战斗 {mgr.ActiveCombat.Time:0.0}s";
+				? L.T("战斗 -")
+				: L.F("战斗 {0:0.0}s", mgr.ActiveCombat.Time);
 		}
 
 		if (_totalTimeLabel != null)
 		{
-			_totalTimeLabel.Text = $"总时长 {FormatTime(_game.RunTotalSeconds)}";
+			_totalTimeLabel.Text = L.F("总时长 {0}", FormatTime(_game.RunTotalSeconds));
 		}
 	}
 

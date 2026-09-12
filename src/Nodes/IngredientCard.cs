@@ -63,7 +63,7 @@ public partial class IngredientCard : PanelContainer
 
 		if (_label != null)
 		{
-			_label.Text = $"{_name} ×{count}";
+			_label.Text = $"{L.T(_name)} ×{count}";
 		}
 
 		// 悬停：鼠标旁显示描述 + 增减效果
@@ -75,7 +75,7 @@ public partial class IngredientCard : PanelContainer
 	{
 		if (_label != null)
 		{
-			_label.Text = $"{_name} ×{count}";
+			_label.Text = $"{L.T(_name)} ×{count}";
 		}
 	}
 

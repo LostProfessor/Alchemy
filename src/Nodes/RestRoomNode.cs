@@ -20,7 +20,7 @@ public partial class RestRoomNode : RoomNodeBase
 
 		var title = new Label
 		{
-			Text = "🔥 休息点",
+			Text = L.T("🔥 休息点"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		};
 		title.AddThemeFontSizeOverride("font_size", 34);
@@ -28,7 +28,7 @@ public partial class RestRoomNode : RoomNodeBase
 
 		Content.AddChild(new Label
 		{
-			Text = "首领前的最后一处篝火。",
+			Text = L.T("首领前的最后一处篝火。"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 			Modulate = new Color(0.75f, 0.75f, 0.75f),
 		});
@@ -44,14 +44,14 @@ public partial class RestRoomNode : RoomNodeBase
 		int heal = RestSiteActions.CalculateSleepHeal(hp); // 基础值（不含遗物加成）
 		Content.AddChild(new Label
 		{
-			Text = $"睡一觉约恢复 {heal} 点生命（遗物可加成）",
+			Text = L.F("睡一觉约恢复 {0} 点生命（遗物可加成）", heal),
 			HorizontalAlignment = HorizontalAlignment.Center,
 			Modulate = new Color(0.6f, 0.9f, 0.65f),
 		});
 
 		var sleep = new Button
 		{
-			Text = "睡觉",
+			Text = L.T("睡觉"),
 			CustomMinimumSize = new Vector2(420, 0),
 		};
 		sleep.Pressed += () => Rest(RestChoice.Sleep);
@@ -59,7 +59,7 @@ public partial class RestRoomNode : RoomNodeBase
 
 		var explore = new Button
 		{
-			Text = "探索（随机获得 1 件普通遗物 + 药材奖励）",
+			Text = L.T("探索（随机获得 1 件普通遗物 + 药材奖励）"),
 			CustomMinimumSize = new Vector2(420, 0),
 		};
 		explore.Pressed += () => Rest(RestChoice.Explore);

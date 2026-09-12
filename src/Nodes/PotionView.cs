@@ -62,15 +62,17 @@ public partial class PotionView : PanelContainer
     /// <summary>摘要：清水·恢复×2、铁皮×1（空锅药水则只显示基底名）。</summary>
     private static string Summary(Potion potion)
     {
-        var effects = string.Join("、", potion.Entries.Select(e =>
+        var effects = L.Join(potion.Entries.Select(e =>
         {
             string name = EffectRegistry.Definitions.TryGetValue(e.Effect, out var def)
                 ? def.DisplayName
                 : e.Effect.ToString();
-            return $"{name}×{e.Layers}";
+            return $"{L.T(name)}×{e.Layers}";
         }));
 
-        return potion.IsEmpty ? potion.Base.DisplayName : $"{potion.Base.DisplayName}·{effects}";
+        return potion.IsEmpty
+            ? L.T(potion.Base.DisplayName)
+            : L.F("{0}·{1}", L.T(potion.Base.DisplayName), effects);
     }
 
     /// <summary>开始拖拽：标记 type=potion，预览跟随鼠标显示药水颜色。</summary>

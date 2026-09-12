@@ -171,8 +171,8 @@ public partial class CombatNode : Control
 		else
 		{
 			_brewStatus!.Text = _session.ActivePotion == null
-				? "锅是空的：先点【完成制作】→【重新开锅】"
-				: "有动作在倒计时，稍候再投料";
+				? L.T("锅是空的：先点【完成制作】→【重新开锅】")
+				: L.T("有动作在倒计时，稍候再投料");
 		}
 	}
 
@@ -210,7 +210,7 @@ public partial class CombatNode : Control
 	{
 		_session.StartBrew(baseLiquid);
 		_finishedPotion = null;
-		_completeBtn!.Text = "完成制作";
+		_completeBtn!.Text = L.T("完成制作");
 	}
 
 	private void ShowPotionView(Potion potion)
@@ -223,7 +223,7 @@ public partial class CombatNode : Control
 		}
 		else
 		{
-			_brewStatus!.Text = "药水出炉（预制体缺失，无法展示）";
+			_brewStatus!.Text = L.T("药水出炉（预制体缺失，无法展示）");
 		}
 	}
 
@@ -253,22 +253,22 @@ public partial class CombatNode : Control
 		var brewAction = _combat.PendingActions.FirstOrDefault(a => a.Id.StartsWith("brew_"));
 		if (brewAction != null)
 		{
-			_brewStatus!.Text = $"调制中… {brewAction.Remaining:0.0}s";
+			_brewStatus!.Text = L.F("调制中… {0:0.0}s", brewAction.Remaining);
 			_completeBtn!.Disabled = true;
 		}
 		else if (_session.ActivePotion != null)
 		{
-			_brewStatus!.Text = "拖入材料进锅，或点【完成制作】";
-			_completeBtn!.Text = "完成制作";
+			_brewStatus!.Text = L.T("拖入材料进锅，或点【完成制作】");
+			_completeBtn!.Text = L.T("完成制作");
 			_completeBtn.Disabled = false;
 		}
 		else
 		{
 			// 无锅：选基底开锅（出炉后也回到这里）
 			_brewStatus!.Text = _finishedPotion != null
-				? $"药水出炉！{PotionSummary(_finishedPotion)}    选基底开下一锅"
-				: "选择基底开锅";
-			_completeBtn!.Text = "完成制作";
+				? L.F("药水出炉！{0}    选基底开下一锅", PotionSummary(_finishedPotion))
+				: L.T("选择基底开锅");
+			_completeBtn!.Text = L.T("完成制作");
 		}
 
 		_completeBtn!.Visible = _session.ActivePotion != null; // 无锅时隐藏完成按钮
@@ -292,7 +292,7 @@ public partial class CombatNode : Control
 		var potion = _session.ActivePotion;
 		if (potion == null)
 		{
-			_brewSlots.AddChild(new Label { Text = "选择基底开锅" });
+			_brewSlots.AddChild(new Label { Text = L.T("选择基底开锅") });
 			return;
 		}
 
@@ -301,7 +301,7 @@ public partial class CombatNode : Control
 			// 每层一格：直接显示效果名（层数恒为 1）
 			_brewSlots.AddChild(new Label
 			{
-				Text = EffectRegistry.Get(entry.Effect).DisplayName,
+				Text = L.T(EffectRegistry.Get(entry.Effect).DisplayName),
 			});
 		}
 
@@ -313,9 +313,10 @@ public partial class CombatNode : Control
 
 	private static string PotionSummary(Potion potion)
 	{
-		string content = string.Join(" ", potion.AggregateLayers()
-			.Select(kv => $"{EffectRegistry.Get(kv.Key).DisplayName}×{kv.Value}"));
-		return $"颜色 RGB({potion.Color.R},{potion.Color.G},{potion.Color.B})  内容：{content}";
+		string content = L.Join(potion.AggregateLayers()
+			.Select(kv => $"{L.T(EffectRegistry.Get(kv.Key).DisplayName)}×{kv.Value}"));
+		return L.F("颜色 RGB({0},{1},{2})  内容：{3}",
+			potion.Color.R, potion.Color.G, potion.Color.B, content);
 	}
 
 	// ── 胜负 ───────────────────────────────────────────

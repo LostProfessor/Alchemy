@@ -28,7 +28,7 @@ public partial class TreasureRoomNode : RoomNodeBase
 
 		var title = new Label
 		{
-			Text = "💎 宝箱",
+			Text = L.T("💎 宝箱"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		};
 		title.AddThemeFontSizeOverride("font_size", 34);
@@ -36,7 +36,7 @@ public partial class TreasureRoomNode : RoomNodeBase
 
 		Content.AddChild(new Label
 		{
-			Text = "一段旅程的馈赠。点想要的奖励领取（可只拿其中几样）",
+			Text = L.T("一段旅程的馈赠。点想要的奖励领取（可只拿其中几样）"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 			Modulate = new Color(0.75f, 0.75f, 0.75f),
 		});
@@ -45,14 +45,14 @@ public partial class TreasureRoomNode : RoomNodeBase
 		// 逐块：货币 / 遗物 / 药材袋（已领的块不再显示）
 		if (!reward.CurrencyClaimed)
 		{
-			Content.AddChild(ClaimButton($"获取货币  +{reward.Currency}", mgr.ClaimTreasureCurrency));
+			Content.AddChild(ClaimButton(L.F("获取货币  +{0}", reward.Currency), mgr.ClaimTreasureCurrency));
 		}
 
 		if (reward.Relic != null && !reward.RelicClaimed)
 		{
 			var relic = reward.Relic;
 			var btn = ClaimButton(
-				$"获得遗物：{ContentCatalog.GetRelicResource(relic.Id)?.DisplayName ?? relic.DisplayName}",
+				L.F("获得遗物：{0}", L.T(ContentCatalog.GetRelicResource(relic.Id)?.DisplayName ?? relic.DisplayName)),
 				mgr.ClaimTreasureRelic);
 			btn.AddThemeColorOverride("font_color", RarityColor(relic.Rarity));
 			Content.AddChild(btn);
@@ -60,13 +60,13 @@ public partial class TreasureRoomNode : RoomNodeBase
 
 		if (!reward.BagClaimed)
 		{
-			Content.AddChild(ClaimButton($"获取药材袋：{BagSummary(reward.Ingredients)}", mgr.ClaimTreasureBag));
+			Content.AddChild(ClaimButton(L.F("获取药材袋：{0}", BagSummary(reward.Ingredients)), mgr.ClaimTreasureBag));
 		}
 
 		Content.AddChild(new HSeparator());
 		var leave = new Button
 		{
-			Text = "离开（放弃剩余奖励）",
+			Text = L.T("离开（放弃剩余奖励）"),
 			CustomMinimumSize = new Vector2(420, 0),
 		};
 		leave.Pressed += () =>
@@ -114,8 +114,8 @@ public partial class TreasureRoomNode : RoomNodeBase
 	private static string BagSummary(RewardBag bag) =>
 		string.Join("\n", bag.Items.Select(item => item switch
 		{
-			IngredientReward ir => $"{IngredientName(ir.IngredientId)} ×{ir.Count}",
-			CurrencyReward cr => $"货币 {cr.Amount}",
+			IngredientReward ir => $"{L.T(IngredientName(ir.IngredientId))} ×{ir.Count}",
+			CurrencyReward cr => L.F("货币 {0}", cr.Amount),
 			_ => "?",
 		}));
 

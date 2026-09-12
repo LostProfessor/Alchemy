@@ -75,8 +75,8 @@ public abstract partial class RoomNodeBase : Control
 	protected void ShowMissing(string message)
 	{
 		ClearContent();
-		Content.AddChild(new Label { Text = message });
-		var back = new Button { Text = "返回地图" };
+		Content.AddChild(new Label { Text = L.T(message) });
+		var back = new Button { Text = L.T("返回地图") };
 		back.Pressed += BackToMap;
 		Content.AddChild(back);
 	}

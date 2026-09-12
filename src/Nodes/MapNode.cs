@@ -36,6 +36,7 @@ public partial class MapNode : Control
 	[Export] private PanelContainer _pocketPanel = null!;// 口袋面板（居中、默认隐藏；点开时暂停计时）
 
 	private GameState _game = null!;
+	private ConfirmationDialog? _abandonDialog;	// 「回主菜单」的放弃复核弹窗（懒建）
 
 	public override void _Ready()
 	{
@@ -69,20 +70,20 @@ public partial class MapNode : Control
 		var mgr = _game.Manager!;
 		if (_hudLabel != null)
 		{
-			_hudLabel.Text =
-				$"第 {mgr.ActIndex} 大层    生命 {mgr.Player.CurrentHp}/{mgr.Player.MaxHp}    " +
-				$"货币 {mgr.Run.Currency}    口袋 {mgr.Run.Pocket.TotalCount}";
+			_hudLabel.Text = L.F(
+				"第 {0} 大层    生命 {1}/{2}    货币 {3}    口袋 {4}",
+				mgr.ActIndex, mgr.Player.CurrentHp, mgr.Player.MaxHp, mgr.Run.Currency, mgr.Run.Pocket.TotalCount);
 		}
 
 		if (mgr.Phase == RunPhase.Completed)
 		{
-			ShowTextPanel("通关！");
+			ShowTextPanel(L.T("通关！"));
 			return;
 		}
 
 		if (mgr.Phase == RunPhase.Defeated)
 		{
-			ShowTextPanel("你倒下了…");
+			ShowTextPanel(L.T("你倒下了…"));
 			return;
 		}
 
@@ -165,23 +166,23 @@ public partial class MapNode : Control
 
 		var list = new VBoxContainer();
 		list.AddThemeConstantOverride("separation", 4);
-		list.AddChild(new Label { Text = "药材口袋" });
+		list.AddChild(new Label { Text = L.T("药材口袋") });
 
 		var counts = _game.Manager!.Run.Pocket.Counts
 			.OrderByDescending(kv => kv.Value) // 按数量从高到低
 			.ToList();
 		if (counts.Count == 0)
 		{
-			list.AddChild(new Label { Text = "（口袋是空的）" });
+			list.AddChild(new Label { Text = L.T("（口袋是空的）") });
 		}
 
 		foreach (var (id, count) in counts)
 		{
 			var name = Ingredients.Default.All.FirstOrDefault(i => i.Id == id)?.DisplayName ?? id;
-			list.AddChild(new Label { Text = $"{name} ×{count}" });
+			list.AddChild(new Label { Text = $"{L.T(name)} ×{count}" });
 		}
 
-		var close = new Button { Text = "关闭" };
+		var close = new Button { Text = L.T("关闭") };
 		close.Pressed += ClosePocket;
 		list.AddChild(close);
 
@@ -216,7 +217,7 @@ public partial class MapNode : Control
 		}
 
 		// 起点（不可点，用文字；首领用贴图）
-		AddPoint(map.Start, null, "起", enabled: false, new Color(0.6f, 0.6f, 0.6f));
+		AddPoint(map.Start, null, L.T("起"), enabled: false, new Color(0.6f, 0.6f, 0.6f));
 		AddPoint(map.Boss, IconTextureOf(MapPointType.Boss), string.Empty,
 			mgr.AvailableNextPoints.Contains(map.Boss),
 			mgr.AvailableNextPoints.Contains(map.Boss) ? Colors.White : Colors.Gray);
@@ -308,7 +309,7 @@ public partial class MapNode : Control
 		_ => null,
 	};
 
-	private static string IconOf(MapPointType type) => type switch
+	private static string IconOf(MapPointType type) => L.T(type switch
 	{
 		MapPointType.Combat => "战",
 		MapPointType.Elite => "精",
@@ -318,7 +319,7 @@ public partial class MapNode : Control
 		MapPointType.Shop => "商",
 		MapPointType.Boss => "首",
 		_ => "?",
-	};
+	});
 
 	/// <summary>地图节点标记贴图（Theme/textures/ui/，与 IconOf 对应；无图时回退文字）。</summary>
 	private static Texture2D IconTextureOf(MapPointType type) => type switch
@@ -357,15 +358,15 @@ public partial class MapNode : Control
 
 		var title = new Label
 		{
-			Text = mgr.CurrentRoom?.Type.ToString() ?? "房间",
+			Text = mgr.CurrentRoom != null ? L.RoomTypeName(mgr.CurrentRoom.Type) : L.T("房间"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		};
 		title.AddThemeFontSizeOverride("font_size", 28);
 		_roomPanel!.AddChild(title);
 
-		_roomPanel!.AddChild(new Label { Text = $"进入 {mgr.CurrentRoom?.Id}" });
+		_roomPanel!.AddChild(new Label { Text = L.F("进入 {0}", mgr.CurrentRoom?.Id ?? "?") });
 
-		var done = new Button { Text = "完成房间（战斗默认胜利）" };
+		var done = new Button { Text = L.T("完成房间（战斗默认胜利）") };
 		done.Pressed += CompleteCurrentRoom;
 		_roomPanel!.AddChild(done);
 
@@ -379,7 +380,7 @@ public partial class MapNode : Control
 
 		var title = new Label
 		{
-			Text = "战斗胜利！选择一个奖励袋",
+			Text = L.T("战斗胜利！选择一个奖励袋"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		};
 		title.AddThemeFontSizeOverride("font_size", 24);
@@ -406,7 +407,7 @@ public partial class MapNode : Control
 		label.AddThemeFontSizeOverride("font_size", 32);
 		_roomPanel!.AddChild(label);
 
-		var back = new Button { Text = "回主菜单" };
+		var back = new Button { Text = L.T("回主菜单") };
 		back.Pressed += BackToMenu;
 		_roomPanel!.AddChild(back);
 
@@ -480,17 +481,48 @@ public partial class MapNode : Control
 	private static string BagSummary(RewardBag bag) =>
 		string.Join("\n", bag.Items.Select(item => item switch
 		{
-			IngredientReward ir => $"{IngredientName(ir.IngredientId)} ×{ir.Count}",
-			CurrencyReward cr => $"货币 {cr.Amount}",
+			IngredientReward ir => $"{L.T(IngredientName(ir.IngredientId))} ×{ir.Count}",
+			CurrencyReward cr => L.F("货币 {0}", cr.Amount),
 			_ => "?",
 		}));
 
 	private static string IngredientName(string id) =>
 		Ingredients.Default.All.FirstOrDefault(i => i.Id == id)?.DisplayName ?? id;
 
+	/// <summary>
+	/// 「回主菜单」= <b>放弃本局</b>（归档到历史 + 删掉进行中的存档，不能“继续”）。
+	/// 语义与设置页的「保存并退出」（保留存档）不同，所以先弹窗复核，避免误触丢档。
+	/// </summary>
 	private void BackToMenu()
 	{
-		_game.EndRun();
-		_game.ChangeScene("res://scenes/main_menu/main_menu.tscn");
+		if (_game.Manager == null)
+		{
+			_game.ChangeScene(GameState.MainMenuScenePath); // 没有进行中的局 → 无需确认
+			return;
+		}
+
+		_abandonDialog ??= BuildAbandonDialog();
+		_abandonDialog.DialogText =
+			L.T("放弃本局并返回主菜单？") + "\n" +
+			L.T("本局会归档进「历史记录」，进行中的存档将被删除（无法再继续）。");
+		_abandonDialog.PopupCentered();
+	}
+
+	/// <summary>放弃复核弹窗（首次使用时创建并常驻本场景）。</summary>
+	private ConfirmationDialog BuildAbandonDialog()
+	{
+		var dialog = new ConfirmationDialog
+		{
+			Title = L.T("确认放弃"),
+			OkButtonText = L.T("放弃并返回"),
+			CancelButtonText = L.T("取消"),
+		};
+		dialog.Confirmed += () =>
+		{
+			_game.EndRun();
+			_game.ChangeScene(GameState.MainMenuScenePath);
+		};
+		AddChild(dialog);
+		return dialog;
 	}
 }

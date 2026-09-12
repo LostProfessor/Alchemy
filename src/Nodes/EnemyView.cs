@@ -45,7 +45,7 @@ public partial class EnemyView : TargetZone
 			_image.Visible = false;
 		}
 
-		_nameLabel.Text = enemy.Name;
+		_nameLabel.Text = L.T(enemy.Name);
 	}
 
 	public override void _ExitTree()
@@ -134,7 +134,7 @@ public partial class EnemyView : TargetZone
 			if (_effectsBar != null) _effectsBar.Visible = false;
 			if (_intentionLabel != null)
 			{
-				_intentionLabel.Text = "💀 倒下";
+				_intentionLabel.Text = L.T("💀 倒下");
 				_intentionLabel.Modulate = new Color(0.55f, 0.55f, 0.55f); // 清掉警示/瘫痪色
 			}
 
@@ -167,7 +167,7 @@ public partial class EnemyView : TargetZone
 			if (_combat.IsEnemyStaggered(_enemy))
 			{
 				// 被打断后的瘫痪（蓝色）
-				_intentionLabel.Text = "💫 瘫痪";
+				_intentionLabel.Text = L.T("💫 瘫痪");
 				_intentionLabel.Modulate = new Color(0.6f, 0.75f, 1f);
 			}
 			else
@@ -175,7 +175,9 @@ public partial class EnemyView : TargetZone
 				var current = _combat.GetCurrentIntention(_enemy);
 				_intentionLabel.Text = current == null
 					? string.Empty
-					: (current.Interruptible ? "⚠ " : string.Empty) + CombatUi.IntentionText(current);
+					: current.Interruptible
+						? L.F("⚠ {0}", CombatUi.IntentionText(current))
+						: CombatUi.IntentionText(current);
 
 				// 可打断的意图用警示色，提示"这招可以破"（将来可在此加特殊光效/音效）
 				_intentionLabel.Modulate = current is { Interruptible: true }

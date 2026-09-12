@@ -75,7 +75,7 @@ public partial class MainMenuNode : Control
 		}
 		else
 		{
-			_continueBtn!.Text = "没有可用存档";
+			_continueBtn!.Text = L.T("没有可用存档");
 			_continueBtn!.Disabled = true;
 		}
 	}

@@ -31,7 +31,7 @@ public partial class OpeningRelicNode : Control
 
 		_list.AddChild(new Label
 		{
-			Text = "选择一件开局遗物（职业遗物已自动获得）",
+			Text = L.T("选择一件开局遗物（职业遗物已自动获得）"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		});
 		_list.AddChild(new HSeparator());
@@ -43,7 +43,7 @@ public partial class OpeningRelicNode : Control
 			int index = i;
 			var btn = new Button
 			{
-				Text = $"选择：{name}",
+				Text = L.F("选择：{0}", L.T(name)),
 				CustomMinimumSize = new Vector2(420, 0),
 			};
 			btn.AddThemeColorOverride("font_color", RarityColor(relic.Rarity));
@@ -58,7 +58,7 @@ public partial class OpeningRelicNode : Control
 		_list.AddChild(new HSeparator());
 		var skip = new Button
 		{
-			Text = "跳过（不拿额外遗物）",
+			Text = L.T("跳过（不拿额外遗物）"),
 			CustomMinimumSize = new Vector2(420, 0),
 		};
 		skip.Pressed += () =>

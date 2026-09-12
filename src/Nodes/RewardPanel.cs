@@ -40,14 +40,14 @@ public partial class RewardPanel : PanelContainer
 
 		_list.AddChild(new Label
 		{
-			Text = "战斗胜利！点击领取想要的奖励（可跳过全部）",
+			Text = L.T("战斗胜利！点击领取想要的奖励（可跳过全部）"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		});
 
 		// 货币块（点“获取货币”才入账）
 		if (mgr.PendingRewardCurrency is { } currency && currency > 0)
 		{
-			_list.AddChild(Block($"获取货币  +{currency}", () => { mgr.ClaimRewardCurrency(); }));
+			_list.AddChild(Block(L.F("获取货币  +{0}", currency), () => { mgr.ClaimRewardCurrency(); }));
 		}
 
 		// 额外遗物块（精英/首领战）
@@ -55,7 +55,7 @@ public partial class RewardPanel : PanelContainer
 		{
 			var relic = mgr.PendingBonusRelic;
 			string name = ContentCatalog.GetRelicResource(relic.Id)?.DisplayName ?? relic.DisplayName;
-			_list.AddChild(Block($"获得遗物：{name}", () => { mgr.ClaimBonusRelic(); }));
+			_list.AddChild(Block(L.F("获得遗物：{0}", L.T(name)), () => { mgr.ClaimBonusRelic(); }));
 		}
 
 		// 药材袋三选一
@@ -65,13 +65,13 @@ public partial class RewardPanel : PanelContainer
 			foreach (var bag in mgr.PendingRewards)
 			{
 				var captured = bag;
-				_list.AddChild(Block($"选择药材袋：{BagSummary(captured)}", () => mgr.PickReward(captured)));
+				_list.AddChild(Block(L.F("选择药材袋：{0}", BagSummary(captured)), () => mgr.PickReward(captured)));
 			}
 		}
 
 		// 跳过剩余全部（未领奖励销毁）
 		_list.AddChild(new HSeparator());
-		_list.AddChild(Block("跳过剩余奖励（离开）", mgr.SkipRewards));
+		_list.AddChild(Block(L.T("跳过剩余奖励（离开）"), mgr.SkipRewards));
 
 		Visible = true;
 	}
@@ -144,7 +144,7 @@ public partial class RewardPanel : PanelContainer
 		Clear();
 		_list.AddChild(new Label
 		{
-			Text = "首领遗物 · 选择一件（准备进入下一层）",
+			Text = L.T("首领遗物 · 选择一件（准备进入下一层）"),
 			HorizontalAlignment = HorizontalAlignment.Center,
 		});
 		_list.AddChild(new HSeparator());
@@ -156,7 +156,7 @@ public partial class RewardPanel : PanelContainer
 			int index = i;
 			var btn = new Button
 			{
-				Text = $"选择：{name}",
+				Text = L.F("选择：{0}", L.T(name)),
 				CustomMinimumSize = new Vector2(240, 0),
 			};
 			btn.AddThemeColorOverride("font_color", RarityColor(relic.Rarity));
@@ -169,7 +169,7 @@ public partial class RewardPanel : PanelContainer
 		}
 
 		_list.AddChild(new HSeparator());
-		_list.AddChild(Block("跳过（不选首领遗物）", mgr.SkipBossRelic));
+		_list.AddChild(Block(L.T("跳过（不选首领遗物）"), mgr.SkipBossRelic));
 
 		Visible = true;
 	}
@@ -194,8 +194,8 @@ public partial class RewardPanel : PanelContainer
 	private static string BagSummary(RewardBag bag) =>
 		string.Join("\n", bag.Items.Select(item => item switch
 		{
-			IngredientReward ir => $"{IngredientName(ir.IngredientId)} ×{ir.Count}",
-			CurrencyReward cr => $"货币 {cr.Amount}",
+			IngredientReward ir => $"{L.T(IngredientName(ir.IngredientId))} ×{ir.Count}",
+			CurrencyReward cr => L.F("货币 {0}", cr.Amount),
 			_ => "?",
 		}));
 

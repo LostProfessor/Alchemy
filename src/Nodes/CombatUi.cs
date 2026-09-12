@@ -26,8 +26,8 @@ public static class CombatUi
 		{
 			var def = EffectRegistry.Get(effect.Id);
 			string text = effect.DurationRemaining.HasValue
-				? $"{def.DisplayName}×{effect.Layers}·{effect.DurationRemaining:0}s"
-				: $"{def.DisplayName}×{effect.Layers}";
+				? L.F("{0}×{1}·{2:0}s", L.T(def.DisplayName), effect.Layers, effect.DurationRemaining)
+				: L.F("{0}×{1}", L.T(def.DisplayName), effect.Layers);
 			bar.AddChild(new Label { Text = text });
 		}
 	}
@@ -35,10 +35,10 @@ public static class CombatUi
 	/// <summary>把敌人当前意图显示成文字（如 "攻击 8" / "防御 6" / "施法 易感×1"）。</summary>
 	public static string IntentionText(Intention intention) => intention.ActionType switch
 	{
-		IntentionActionType.Attack => $"{intention.DisplayName} {intention.Damage}",
-		IntentionActionType.Defend => $"{intention.DisplayName} {intention.Block}",
+		IntentionActionType.Attack => L.F("{0} {1}", L.T(intention.DisplayName), intention.Damage),
+		IntentionActionType.Defend => L.F("{0} {1}", L.T(intention.DisplayName), intention.Block),
 		IntentionActionType.ApplyEffect =>
-			$"{intention.DisplayName} {EffectRegistry.Get(intention.Effect).DisplayName}×{intention.EffectLayers}",
-		_ => intention.DisplayName,
+			L.F("{0} {1}×{2}", L.T(intention.DisplayName), L.T(EffectRegistry.Get(intention.Effect).DisplayName), intention.EffectLayers),
+		_ => L.T(intention.DisplayName),
 	};
 }
