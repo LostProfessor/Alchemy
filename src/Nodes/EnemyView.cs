@@ -32,6 +32,7 @@ public partial class EnemyView : TargetZone
 		_combat = combat;
 		_enemy = enemy;
 		combat.ActionTelegraphed += OnActionTelegraphed; // 订阅"出手前预兆"
+		combat.ActionInterrupted += OnActionInterrupted;  // 订阅"被打断（破招）"
 
 		var icon = ContentCatalog.GetEnemyIcon(enemy.TemplateId ?? string.Empty);
 		if (icon != null)
@@ -52,6 +53,7 @@ public partial class EnemyView : TargetZone
 		if (_combat != null)
 		{
 			_combat.ActionTelegraphed -= OnActionTelegraphed; // 防悬空订阅
+			_combat.ActionInterrupted -= OnActionInterrupted;
 		}
 	}
 
@@ -81,6 +83,32 @@ public partial class EnemyView : TargetZone
 		_windUpTween = CreateTween();
 		_windUpTween.TweenProperty(this, "scale", new Vector2(1.12f, 1.12f), 0.15);
 		_windUpTween.TweenProperty(this, "scale", Vector2.One, 0.35);
+	}
+
+	/// <summary>打断（破招）：本敌人被打断 → 取消抬手，播瘫痪表现。</summary>
+	private void OnActionInterrupted(ActionInterrupted interrupted)
+	{
+		if (_enemy == null || interrupted.Actor != _enemy)
+		{
+			return;
+		}
+
+		PlayStagger();
+	}
+
+	/// <summary>
+	/// 瘫痪表现。当前是占位（取消抬手 + 下蹲回弹）；将来接动画时换成 _anim.Play("stagger")，
+	/// 音效可在这里播（AudioStreamPlayer 的 Bus 用 "Sfx"）。
+	/// </summary>
+	private void PlayStagger()
+	{
+		_windUpTween?.Kill(); // 取消抬手
+		Scale = Vector2.One;
+
+		PivotOffset = Size / 2f;
+		var tween = CreateTween();
+		tween.TweenProperty(this, "scale", new Vector2(0.94f, 0.9f), 0.12);
+		tween.TweenProperty(this, "scale", Vector2.One, 0.3);
 	}
 
 	public override void _Process(double delta)
@@ -123,15 +151,32 @@ public partial class EnemyView : TargetZone
 
 		if (_actionBar != null)
 		{
+			// 出手/瘫痪都走同一条倒计时条（瘫痪时条重新走满）
 			var action = _combat.PendingActions.FirstOrDefault(
-				a => a.Actor == _enemy && a.Id.StartsWith("enemy_move_"));
+				a => a.Actor == _enemy && a.Id.StartsWith("enemy_"));
 			_actionBar.Value = action == null ? 0f : 1f - action.Remaining / action.Duration;
 		}
 
 		if (_intentionLabel != null)
 		{
-			var current = _combat.GetCurrentIntention(_enemy);
-			_intentionLabel.Text = current == null ? string.Empty : CombatUi.IntentionText(current);
+			if (_combat.IsEnemyStaggered(_enemy))
+			{
+				// 被打断后的瘫痪（蓝色）
+				_intentionLabel.Text = "💫 瘫痪";
+				_intentionLabel.Modulate = new Color(0.6f, 0.75f, 1f);
+			}
+			else
+			{
+				var current = _combat.GetCurrentIntention(_enemy);
+				_intentionLabel.Text = current == null
+					? string.Empty
+					: (current.Interruptible ? "⚠ " : string.Empty) + CombatUi.IntentionText(current);
+
+				// 可打断的意图用警示色，提示"这招可以破"（将来可在此加特殊光效/音效）
+				_intentionLabel.Modulate = current is { Interruptible: true }
+					? new Color(1f, 0.7f, 0.25f)
+					: Colors.White;
+			}
 		}
 
 		CombatUi.RefreshEffects(_effectsBar, _enemy);

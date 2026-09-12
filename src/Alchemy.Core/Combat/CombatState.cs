@@ -19,6 +19,7 @@ public sealed class CombatState
     private readonly List<Creature> _enemies = new();
     private readonly List<TimedAction> _pendingActions = new();
     private readonly Dictionary<Creature, Intention> _enemyCurrentIntention = new();
+    private readonly Dictionary<Creature, EnemySchedule> _enemySchedules = new();
 
     public HookHub Hooks { get; } = new();
 
@@ -122,6 +123,11 @@ public sealed class CombatState
 
         Hooks.RaiseAfterDamage(ctx); // 不朽夹持生命、棘皮反弹等
 
+        if (ctx.Target.IsAlive)
+        {
+            TryInterrupt(ctx.Target, ctx.ActualDealt); // 破招：预兆窗口内的高额伤害可打断敌人出手
+        }
+
         if (!ctx.Target.IsAlive)
         {
             Hooks.RaiseCreatureDied(ctx.Target);
@@ -209,6 +215,12 @@ public sealed class CombatState
     /// <summary>敌人行动的默认预兆提前量（秒）：意图未单独指定（TelegraphSeconds&lt;0）时用它（默认 1.5s）。</summary>
     public float EnemyTelegraphSeconds { get; set; } = 1.5f;
 
+    /// <summary>可打断技能未单独指定预兆时长时的默认值（比普通的长，留出反应/破招窗口）。</summary>
+    public float InterruptibleTelegraphSeconds { get; set; } = 2.5f;
+
+    /// <summary>打断事件：可打断的敌人出手在预兆窗口内被高额伤害打断（表现层播瘫痪）。</summary>
+    public event Action<ActionInterrupted>? ActionInterrupted;
+
     /// <summary>
     /// 开始一个计时动作（敌人行动/炼药操作等）。
     /// 先抛 OnBeforeTimedAction（迟钝/专注修改时长），再进入倒计时队列。
@@ -230,16 +242,19 @@ public sealed class CombatState
     /// </summary>
     public void ScheduleEnemyAction(Creature enemy, IReadOnlyList<Intention> intentions)
     {
-        ScheduleNextIntention(enemy, intentions, 0);
+        _enemySchedules[enemy] = new EnemySchedule(intentions);
+        ScheduleCurrentIntention(enemy);
     }
 
-    private void ScheduleNextIntention(Creature enemy, IReadOnlyList<Intention> intentions, int index)
+    private void ScheduleCurrentIntention(Creature enemy)
     {
-        var intention = intentions[index % intentions.Count];
-        _enemyCurrentIntention[enemy] = intention; // 记录当前意图（表现层展示）
+        if (!_enemySchedules.TryGetValue(enemy, out var schedule) || schedule.Intentions.Count == 0)
+        {
+            return;
+        }
 
-        // 预兆提前量：意图可单独指定（>=0），否则用战斗默认（EnemyTelegraphSeconds）
-        float telegraph = intention.TelegraphSeconds >= 0f ? intention.TelegraphSeconds : EnemyTelegraphSeconds;
+        var intention = schedule.Intentions[schedule.Index % schedule.Intentions.Count];
+        _enemyCurrentIntention[enemy] = intention; // 记录当前意图（表现层展示）
 
         _pendingActions.Add(new TimedAction($"enemy_move_{enemy.Name}", enemy, intention.IntervalSeconds, combat =>
         {
@@ -250,8 +265,85 @@ public sealed class CombatState
             }
 
             ExecuteIntention(enemy, intention);
-            ScheduleNextIntention(enemy, intentions, index + 1); // 进入队列下一个意图
-        }, telegraph));
+            schedule.Index++; // 进入队列下一个意图
+            ScheduleCurrentIntention(enemy);
+        }, ResolveTelegraph(intention)));
+    }
+
+    /// <summary>预兆提前量：意图单独指定 ≥0 用其值；否则可打断技能用更长的默认，其余用战斗默认。</summary>
+    private float ResolveTelegraph(Intention intention)
+    {
+        if (intention.TelegraphSeconds >= 0f)
+        {
+            return intention.TelegraphSeconds;
+        }
+
+        return intention.Interruptible ? InterruptibleTelegraphSeconds : EnemyTelegraphSeconds;
+    }
+
+    /// <summary>
+    /// 破招判定：目标（敌人）的当前意图可打断、且已进入"预兆已发、尚未结算"的窗口、
+    /// 且这一次实际伤害达阈值 → 打断。对伤害来源不作要求（DoT 跳伤也算）。
+    /// </summary>
+    private void TryInterrupt(Creature target, int damage)
+    {
+        if (damage <= 0 ||
+            !_enemySchedules.TryGetValue(target, out var schedule) ||
+            !_enemyCurrentIntention.TryGetValue(target, out var intention) ||
+            !intention.Interruptible ||
+            damage < intention.InterruptDamage)
+        {
+            return;
+        }
+
+        var action = _pendingActions.FirstOrDefault(
+            a => ReferenceEquals(a.Actor, target) && a.Id.StartsWith("enemy_move_"));
+        if (action == null || !action.Telegraphed || action.Remaining <= 0f)
+        {
+            return; // 不在预兆窗口内（尚未抬手 / 已结算）
+        }
+
+        InterruptEnemy(target, schedule, intention, damage);
+    }
+
+    /// <summary>打断：取消当前出手 → 进入瘫痪；瘫痪结束后直接进入下一个意图（被打断的招不补）。</summary>
+    private void InterruptEnemy(Creature enemy, EnemySchedule schedule, Intention intention, int damage)
+    {
+        int idx = _pendingActions.FindIndex(
+            a => ReferenceEquals(a.Actor, enemy) && a.Id.StartsWith("enemy_move_"));
+        if (idx >= 0)
+        {
+            _pendingActions.RemoveAt(idx);
+        }
+
+        _enemyCurrentIntention.Remove(enemy); // 瘫痪期间无意图（表现层显示"瘫痪"）
+        ActionInterrupted?.Invoke(new ActionInterrupted(enemy, intention, damage, intention.StaggerSeconds));
+
+        float stagger = Math.Max(0f, intention.StaggerSeconds);
+        _pendingActions.Add(new TimedAction($"enemy_stagger_{enemy.Name}", enemy, stagger, combat =>
+        {
+            if (!enemy.IsAlive)
+            {
+                return; // 瘫痪期间被打死：不再行动
+            }
+
+            schedule.Index++; // 被打断的招不补，直接进入下一个意图
+            ScheduleCurrentIntention(enemy);
+        }));
+    }
+
+    /// <summary>该敌人是否处于被打断后的瘫痪中（表现层显示/判断用）。</summary>
+    public bool IsEnemyStaggered(Creature enemy) =>
+        _pendingActions.Any(a => ReferenceEquals(a.Actor, enemy) && a.Id.StartsWith("enemy_stagger_"));
+
+    /// <summary>一个敌人的意图队列推进状态（打断后需从外部接续，不能只放在闭包里）。</summary>
+    private sealed class EnemySchedule
+    {
+        public IReadOnlyList<Intention> Intentions { get; }
+
+        public int Index { get; set; }
+
+        public EnemySchedule(IReadOnlyList<Intention> intentions) => Intentions = intentions;
     }
 
     /// <summary>敌人当前正在倒计时/将要执行的意图（供表现层展示，无则 null）。</summary>

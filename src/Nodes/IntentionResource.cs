@@ -26,8 +26,17 @@ public partial class IntentionResource : Resource
 
     [Export] public bool TargetSelf { get; set; }
 
-    /// <summary>预兆提前量（秒）：出手前多少秒发预兆；-1=用战斗默认（1.5s）。可打断的长前摇技能应设更大值。</summary>
+    /// <summary>预兆提前量（秒）：出手前多少秒发预兆；-1=自动（可打断 2.5s / 普通 1.5s）。</summary>
     [Export] public float TelegraphSeconds { get; set; } = -1f;
+
+    /// <summary>是否可被打断（破招）：为 true 时，预兆发出后受到一次 ≥ InterruptDamage 的伤害会被打断。</summary>
+    [Export] public bool Interruptible { get; set; }
+
+    /// <summary>打断所需的最小单次伤害（固定数值，仅可打断的技能有意义）。</summary>
+    [Export] public int InterruptDamage { get; set; }
+
+    /// <summary>被打断后的瘫痪时长（秒）。</summary>
+    [Export] public float StaggerSeconds { get; set; } = 2f;
 
     public Intention ToIntention() => new(
         $"{ActionType}_{Damage}_{Block}_{Effect}_{EffectLayers}",
@@ -39,5 +48,8 @@ public partial class IntentionResource : Resource
         Effect,
         EffectLayers,
         TargetSelf,
-        TelegraphSeconds);
+        TelegraphSeconds,
+        Interruptible,
+        InterruptDamage,
+        StaggerSeconds);
 }

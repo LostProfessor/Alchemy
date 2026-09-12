@@ -29,4 +29,7 @@ public sealed record Intention(
     EffectId Effect = EffectId.None,
     int EffectLayers = 0,
     bool TargetSelf = false,
-    float TelegraphSeconds = -1f);
+    float TelegraphSeconds = -1f,
+    bool Interruptible = false,
+    int InterruptDamage = 0,
+    float StaggerSeconds = 2f);
