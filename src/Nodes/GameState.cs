@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using Alchemy.Core.Runs;
 using Alchemy.Core.Runs.Saves;
@@ -38,6 +40,9 @@ public partial class GameState : Node
 	/// <summary>存档路径（Godot user:// 目录；System.IO 需先 GlobalizePath）。</summary>
 	public const string SavePath = "user://save.json";
 
+	/// <summary>整局历史归档路径（结束一局后留存，供回顾）。</summary>
+	public const string ArchivePath = "user://run_history.json";
+
 	/// <summary>设置界面“返回”要回去的场景（打开设置前由入口记录；默认地图）。</summary>
 	public string ReturnScenePath { get; set; } = "res://scenes/map/map.tscn";
 
@@ -54,6 +59,9 @@ public partial class GameState : Node
 
 	/// <summary>System.IO 可直接使用的存档绝对路径。</summary>
 	public static string SavePathAbsolute => ProjectSettings.GlobalizePath(SavePath);
+
+	/// <summary>System.IO 可直接使用的归档绝对路径。</summary>
+	public static string ArchivePathAbsolute => ProjectSettings.GlobalizePath(ArchivePath);
 
 	public bool HasSave => File.Exists(SavePathAbsolute);
 
@@ -76,6 +84,12 @@ public partial class GameState : Node
 
 	public void StartNewRun(int seed, string jobId = "researcher")
 	{
+		// 开新局：删掉可能残留的旧存档（避免主菜单“继续”读回上一局）
+		if (File.Exists(SavePathAbsolute))
+		{
+			File.Delete(SavePathAbsolute);
+		}
+
 		Manager = new RunManager(seed, jobId: jobId);
 		Manager.StartRun();
 		RunTotalSeconds = 0;
@@ -127,11 +141,47 @@ public partial class GameState : Node
 	}
 
 
-	/// <summary>结束/放弃当前局（回主菜单时调用）。</summary>
+	/// <summary>结束/放弃当前局（回主菜单时调用）：先把本局归档到历史，再删除进行中的存档。</summary>
 	public void EndRun()
 	{
+		ArchiveCurrentRun();
 		Manager = null;
 		RunTotalSeconds = 0;
+	}
+
+	/// <summary>读取历史归档（供“回顾”界面展示）。</summary>
+	public List<RunRecord> LoadRunRecords() => RunArchive.LoadAll(ArchivePathAbsolute);
+
+	/// <summary>把当前局归档并删除进行中的存档（Manager 为空则什么都不做）。</summary>
+	private void ArchiveCurrentRun()
+	{
+		var mgr = Manager;
+		if (mgr == null)
+		{
+			return;
+		}
+
+		try
+		{
+			string outcome = mgr.Phase switch
+			{
+				RunPhase.Completed => "Completed",
+				RunPhase.Defeated => "Defeated",
+				_ => "Abandoned", // 中途放弃 / 调试回主菜单
+			};
+
+			var record = RunRecord.FromRun(mgr, outcome, RunTotalSeconds, DateTimeOffset.UtcNow.ToString("o"));
+			RunArchive.Append(ArchivePathAbsolute, record);
+
+			if (File.Exists(SavePathAbsolute))
+			{
+				File.Delete(SavePathAbsolute); // 整局已结束 → 不再“继续”
+			}
+		}
+		catch (Exception ex)
+		{
+			GD.PushWarning($"归档/删除存档失败：{ex.Message}");
+		}
 	}
 
 	public void ChangeScene(string scenePath)
